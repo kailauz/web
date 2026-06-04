@@ -100,6 +100,30 @@ h1 {
   max-width: 620px;
   margin-bottom: 12px;
 }
+.consentRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 620px;
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+.consentRow input {
+  margin-top: 3px;
+}
+.legalLinks {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+.legalLinks a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .waitlist input {
   flex: 1;
   min-width: 0;
@@ -125,6 +149,44 @@ h1 {
 .note, .status { margin: 0; }
 .status.success { color: #cfd8c9; }
 .status.error { color: #e5b1b1; }
+.legalPage {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px 0 72px;
+}
+.legalWrap {
+  width: min(calc(100% - 32px), 840px);
+  margin: 0 auto;
+}
+.backLink {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--muted);
+}
+.legalWrap h1 {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+.legalMeta,
+.legalIntro,
+.legalSection p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.legalMeta {
+  margin: 0 0 18px;
+}
+.legalIntro {
+  margin: 0 0 28px;
+}
+.legalSection {
+  margin-bottom: 28px;
+}
+.legalSection h2 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+}
 .srOnly {
   position: absolute;
   width: 1px;

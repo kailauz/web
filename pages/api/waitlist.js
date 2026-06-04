@@ -23,6 +23,7 @@ export default async function handler(req, res) {
   const email = String(req.body?.email || '').trim().toLowerCase();
   const locale = req.body?.lang === 'ru' ? 'ru' : 'en';
   const source = String(req.body?.source || 'landing').trim().slice(0, 100);
+  const consent = req.body?.consent === true;
 
   if (!supabaseUrl || !supabaseKey) {
     res.status(500).json({ error: 'Supabase env is missing' });
@@ -34,10 +35,17 @@ export default async function handler(req, res) {
     return;
   }
 
+  if (!consent) {
+    res.status(400).json({ error: 'Consent is required' });
+    return;
+  }
+
   const { error } = await supabase.from('landing_waitlist').insert({
     email,
     locale,
     source,
+    consent_email_marketing: true,
+    consent_at: new Date().toISOString(),
     user_agent: req.headers['user-agent'] || null,
   });
 

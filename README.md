@@ -12,17 +12,21 @@ Web-часть проекта `kailauz`.
 
 - `pages/index.js` — главная страница лендинга
 - `pages/api/waitlist.js` — серверный endpoint для waitlist
+- `pages/privacy.js` — политика конфиденциальности
+- `pages/terms.js` — условия использования
 - `styles/globals.css` — глобальные стили лендинга
 - `public/robots.txt` — robots
 - `public/sitemap.xml` — sitemap
 - `public/site.webmanifest` — manifest
 - `sql/001_waitlist.sql` — таблица и policy для waitlist в Supabase
+- `sql/002_waitlist_consent.sql` — consent-поля для waitlist
 
 ## Что делает текущий сайт
 
 - показывает минимальный двуязычный лендинг `EN / RU`
 - объясняет продукт коротко и без лишнего шума
 - собирает email в waitlist
+- запрашивает согласие на email-обновления
 - использует `Supabase` для сохранения waitlist-заявок
 - подходит для деплоя на `Vercel`
 
@@ -47,7 +51,9 @@ Waitlist работает через `pages/api/waitlist.js`.
 Endpoint:
 
 - валидирует email
+- требует consent
 - пишет запись в `public.landing_waitlist`
+- сохраняет `consent_email_marketing` и `consent_at`
 - использует `NEXT_PUBLIC_SUPABASE_URL`
 - использует `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
@@ -64,9 +70,10 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
 
 1. Убедиться, что в `apps/web/.env` заданы `NEXT_PUBLIC_SUPABASE_URL` и `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 2. Выполнить SQL из `apps/web/sql/001_waitlist.sql` в Supabase SQL Editor.
-3. Выполнить `yarn install` внутри `apps/web`.
-4. Выполнить `yarn dev` внутри `apps/web`.
-5. Открыть `http://localhost:3000`.
+3. Выполнить SQL из `apps/web/sql/002_waitlist_consent.sql` в Supabase SQL Editor.
+4. Выполнить `yarn install` внутри `apps/web`.
+5. Выполнить `yarn dev` внутри `apps/web`.
+6. Открыть `http://localhost:3000`.
 
 ## Пакетный менеджер
 

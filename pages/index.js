@@ -13,10 +13,15 @@ const copy = {
     waitlistLabel: 'Email',
     waitlistButton: 'Join the waiting list',
     waitlistCaption: 'We will only write when early access becomes available.',
+    consentLabel:
+      'I agree to receive product news, updates, and early access emails from kailauz.',
+    consentError: 'Please confirm that you agree to receive email updates.',
     waitlistSuccess: 'You are on the waiting list. We will email you when early access opens.',
     waitlistError: 'Please enter a valid email.',
     waitlistServerError: 'Something went wrong. Please try again in a moment.',
-    telegramLabel: 'Official channel for news and updates'
+    telegramLabel: 'Official channel for news and updates',
+    privacy: 'Privacy Policy',
+    terms: 'Terms of Use'
   },
   ru: {
     navWaitlist: 'Список ожидания',
@@ -29,16 +34,22 @@ const copy = {
     waitlistLabel: 'Email',
     waitlistButton: 'Записаться в список ожидания',
     waitlistCaption: 'Напишем только тогда, когда откроем ранний доступ.',
+    consentLabel:
+      'Я соглашаюсь получать новости о продукте, обновления и письма о раннем доступе от kailauz.',
+    consentError: 'Подтвердите согласие на получение email-обновлений.',
     waitlistSuccess: 'Вы в списке ожидания. Напишем, когда откроем ранний доступ.',
     waitlistError: 'Введите корректный email.',
     waitlistServerError: 'Что-то пошло не так. Попробуйте ещё раз чуть позже.',
-    telegramLabel: 'Официальный канал для новостей и связи'
+    telegramLabel: 'Официальный канал для новостей и связи',
+    privacy: 'Политика конфиденциальности',
+    terms: 'Условия использования'
   }
 };
 
 export default function Home() {
   const [lang, setLang] = useState('en');
   const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
   const t = useMemo(() => copy[lang], [lang]);
@@ -61,6 +72,11 @@ export default function Home() {
       return;
     }
 
+    if (!consent) {
+      setStatus({ type: 'error', message: t.consentError });
+      return;
+    }
+
     setLoading(true);
     setStatus({ type: '', message: '' });
 
@@ -68,7 +84,7 @@ export default function Home() {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), lang, source: 'landing' })
+        body: JSON.stringify({ email: email.trim(), lang, source: 'landing', consent })
       });
 
       const payload = await response.json();
@@ -78,6 +94,7 @@ export default function Home() {
       }
 
       setEmail('');
+      setConsent(false);
       setStatus({ type: 'success', message: t.waitlistSuccess });
     } catch (error) {
       setStatus({ type: 'error', message: t.waitlistServerError });
@@ -97,15 +114,15 @@ export default function Home() {
         />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#0b0b0d" />
-        <link rel="canonical" href={lang === 'ru' ? 'https://kailauz.com/?lang=ru' : 'https://kailauz.com/'} />
-        <link rel="alternate" hrefLang="en" href="https://kailauz.com/" />
-        <link rel="alternate" hrefLang="ru" href="https://kailauz.com/?lang=ru" />
-        <link rel="alternate" hrefLang="x-default" href="https://kailauz.com/" />
+        <link rel="canonical" href={lang === 'ru' ? 'https://www.kailauz.com/?lang=ru' : 'https://www.kailauz.com/'} />
+        <link rel="alternate" hrefLang="en" href="https://www.kailauz.com/" />
+        <link rel="alternate" hrefLang="ru" href="https://www.kailauz.com/?lang=ru" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kailauz.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://kailauz.com/logo_1024.png" />
-        <meta name="twitter:image" content="https://kailauz.com/logo_1024.png" />
+        <meta property="og:image" content="https://www.kailauz.com/logo_1024.png" />
+        <meta name="twitter:image" content="https://www.kailauz.com/logo_1024.png" />
         <link rel="icon" type="image/jpeg" href="/logo_256.png" />
-        <meta property="og:url" content={lang === 'ru' ? 'https://kailauz.com/?lang=ru' : 'https://kailauz.com/'} />
+        <meta property="og:url" content={lang === 'ru' ? 'https://www.kailauz.com/?lang=ru' : 'https://www.kailauz.com/'} />
         <meta property="og:title" content="kailauz" />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content="kailauz" />
@@ -152,11 +169,27 @@ export default function Home() {
                 {loading ? '...' : t.waitlistButton}
               </button>
             </form>
+            <label className="consentRow" htmlFor="consent">
+              <input
+                id="consent"
+                name="consent"
+                type="checkbox"
+                checked={consent}
+                onChange={(event) => setConsent(event.target.checked)}
+                required
+              />
+              <span>{t.consentLabel}</span>
+            </label>
             <p className="note">{t.waitlistCaption}</p>
             <p className="note">
               <a href="https://t.me/kailauz" className="telegramLink" target="_blank" rel="noreferrer">
                 {t.telegramLabel} — @kailauz
               </a>
+            </p>
+            <p className="legalLinks">
+              <a href={lang === 'ru' ? '/privacy?lang=ru' : '/privacy'}>{t.privacy}</a>
+              <span>·</span>
+              <a href={lang === 'ru' ? '/terms?lang=ru' : '/terms'}>{t.terms}</a>
             </p>
             <p className={status.type ? `status ${status.type}` : 'status'}>{status.message}</p>
           </div>
