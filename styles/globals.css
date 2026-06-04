@@ -45,6 +45,8 @@ button { appearance: none; }
   gap: 14px;
 }
 .waitlistLink { color: var(--muted); font-size: 0.95rem; }
+.telegramLink { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.telegramLink:hover { opacity: 0.85; }
 .langSwitch {
   display: inline-flex;
   border: 1px solid var(--line);

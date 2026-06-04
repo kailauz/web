@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 const copy = {
   en: {
     navWaitlist: 'Waiting list',
+    navTelegram: 'Telegram',
     label: 'Reading app',
     title: 'kailauz helps you keep track of books and get better recommendations.',
     description:
@@ -14,10 +15,12 @@ const copy = {
     waitlistCaption: 'We will only write when early access becomes available.',
     waitlistSuccess: 'You are on the waiting list. We will email you when early access opens.',
     waitlistError: 'Please enter a valid email.',
-    waitlistServerError: 'Something went wrong. Please try again in a moment.'
+    waitlistServerError: 'Something went wrong. Please try again in a moment.',
+    telegramLabel: 'Official channel for news and updates'
   },
   ru: {
     navWaitlist: 'Список ожидания',
+    navTelegram: 'Telegram',
     label: 'Приложение для чтения',
     title: 'kailauz поможет вести список книг и получать более точные рекомендации.',
     description:
@@ -28,7 +31,8 @@ const copy = {
     waitlistCaption: 'Напишем только тогда, когда откроем ранний доступ.',
     waitlistSuccess: 'Вы в списке ожидания. Напишем, когда откроем ранний доступ.',
     waitlistError: 'Введите корректный email.',
-    waitlistServerError: 'Что-то пошло не так. Попробуйте ещё раз чуть позже.'
+    waitlistServerError: 'Что-то пошло не так. Попробуйте ещё раз чуть позже.',
+    telegramLabel: 'Официальный канал для новостей и связи'
   }
 };
 
@@ -112,6 +116,7 @@ export default function Home() {
         <header className="header">
           <div className="brand">kailauz</div>
           <div className="headerActions">
+            <a href="https://t.me/kailauz" className="waitlistLink" target="_blank" rel="noreferrer">{t.navTelegram}</a>
             <a href="#waitlist" className="waitlistLink">{t.navWaitlist}</a>
             <div className="langSwitch" aria-label="Language switcher">
               <button className={lang === 'en' ? 'langBtn active' : 'langBtn'} type="button" onClick={() => setLang('en')}>EN</button>
@@ -143,6 +148,11 @@ export default function Home() {
               </button>
             </form>
             <p className="note">{t.waitlistCaption}</p>
+            <p className="note">
+              <a href="https://t.me/kailauz" className="telegramLink" target="_blank" rel="noreferrer">
+                {t.telegramLabel} — @kailauz
+              </a>
+            </p>
             <p className={status.type ? `status ${status.type}` : 'status'}>{status.message}</p>
           </div>
         </section>
