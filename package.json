@@ -1,0 +1,17 @@
+{
+  "name": "kailauz-web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Minimal landing and waitlist backend for kailauz.com",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.49.8",
+    "dotenv": "^16.4.5",
+    "ws": "^8.21.0"
+  }
+}
