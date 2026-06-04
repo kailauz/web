@@ -102,9 +102,9 @@ export default function Home() {
         <link rel="alternate" hrefLang="ru" href="https://kailauz.com/?lang=ru" />
         <link rel="alternate" hrefLang="x-default" href="https://kailauz.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://kailauz.com/logo_1024.jpg" />
-        <meta name="twitter:image" content="https://kailauz.com/logo_1024.jpg" />
-        <link rel="icon" type="image/jpeg" href="/logo_256.jpg" />
+        <meta property="og:image" content="https://kailauz.com/logo_1024.png" />
+        <meta name="twitter:image" content="https://kailauz.com/logo_1024.png" />
+        <link rel="icon" type="image/jpeg" href="/logo_256.png" />
         <meta property="og:url" content={lang === 'ru' ? 'https://kailauz.com/?lang=ru' : 'https://kailauz.com/'} />
         <meta property="og:title" content="kailauz" />
         <meta property="og:description" content={description} />
@@ -118,7 +118,7 @@ export default function Home() {
       <main className="page">
         <header className="header">
           <div className="brand">
-            <img src="/logo_1024.jpg" alt="kailauz" className="brandLogo" />
+            <img src="/logo_1024.png" alt="kailauz" className="brandLogo" />
           </div>
           <div className="headerActions">
             <a href="https://t.me/kailauz" className="waitlistLink" target="_blank" rel="noreferrer">{t.navTelegram}</a>
