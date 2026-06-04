@@ -4,34 +4,31 @@
 
 Web-часть проекта `kailauz`.
 
-На текущем этапе это SEO-ориентированный двуязычный лендинг для домена `kailauz.com`, который должен:
+Теперь это минимальный `Next.js`-лендинг, который проще деплоить на `Vercel` и проще развивать дальше без отдельного кастомного Node-сервера.
 
-- закреплять бренд в поиске;
-- объяснять тему продукта;
-- занимать нишу вокруг reading app / book taste / AI reading companion;
-- собирать waitlist до релиза приложения.
+## Что есть сейчас
 
-## Что уже есть
+Основная структура:
 
-Сейчас в папке лежит первый статический landing prototype:
+- `pages/index.js` — главная страница лендинга
+- `pages/api/waitlist.js` — серверный endpoint для waitlist
+- `styles/globals.css` — глобальные стили лендинга
+- `public/robots.txt` — robots
+- `public/sitemap.xml` — sitemap
+- `public/site.webmanifest` — manifest
+- `sql/001_waitlist.sql` — таблица и policy для waitlist в Supabase
 
-- `apps/web/index.html`
-- `apps/web/styles.css`
-- `apps/web/script.js`
-- `apps/web/robots.txt`
-- `apps/web/sitemap.xml`
-- `apps/web/site.webmanifest`
+## Что делает текущий сайт
 
-## Что делает текущий лендинг
+- показывает минимальный двуязычный лендинг `EN / RU`
+- объясняет продукт коротко и без лишнего шума
+- собирает email в waitlist
+- использует `Supabase` для сохранения waitlist-заявок
+- подходит для деплоя на `Vercel`
 
-- рассказывает, кто мы и что строим;
-- поддерживает `EN` и `RU`;
-- позиционирует `kailauz` как reading brand;
-- объясняет продукт без обязательных скриншотов;
-- собирает email в waitlist;
-- закладывает базовое техническое SEO с первого дня.
+## SEO-база
 
-## SEO-база, которая уже заложена
+Уже заложены:
 
 - `title`
 - `meta description`
@@ -41,46 +38,27 @@ Web-часть проекта `kailauz`.
 - `Twitter meta`
 - `robots.txt`
 - `sitemap.xml`
-- `structured data` для `Organization` и `SoftwareApplication`
+- `manifest`
 
 ## Waitlist
 
-Форма waitlist уже есть в интерфейсе.
+Waitlist работает через `pages/api/waitlist.js`.
 
-Текущее поведение:
+Endpoint:
 
-- если задан `window.KAILAUZ_WAITLIST_ENDPOINT`, форма отправляет данные туда;
-- если endpoint не подключён, email временно сохраняется в `localStorage`.
+- валидирует email
+- пишет запись в `public.landing_waitlist`
+- использует `NEXT_PUBLIC_SUPABASE_URL`
+- использует `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
-Это временное решение для frontend prototype.
+## Env
 
-## Что не делает текущая версия
+В `apps/web/.env` должны быть:
 
-- не подключена к production backend;
-- не отправляет письма автоматически;
-- не хранит waitlist в реальной базе;
-- не содержит публичные профили пользователей;
-- не заменяет мобильное приложение.
-
-## Ближайшие шаги
-
-Следующий логичный этап для `apps/web`:
-
-- подключить waitlist к `Supabase`;
-- добавить production deploy;
-- подключить analytics;
-- завести Search Console;
-- расширить SEO-структуру под будущие брендовые и контентные страницы;
-- позже добавить публичные профили чтения.
-
-
-## Waitlist backend
-
-Теперь у лендинга есть минимальный backend рядом с фронтендом:
-
-- `apps/web/server.js` — раздача статики и `POST /api/waitlist`
-- `apps/web/sql/001_waitlist.sql` — таблица `landing_waitlist` и `RLS` policy
-- `apps/web/.env` — `NEXT_PUBLIC_SUPABASE_URL` и `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+```env
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+```
 
 ## Как запустить локально
 
@@ -90,7 +68,6 @@ Web-часть проекта `kailauz`.
 4. Выполнить `yarn dev` внутри `apps/web`.
 5. Открыть `http://localhost:3000`.
 
-
 ## Пакетный менеджер
 
 Для `apps/web` используем `yarn`.
@@ -99,4 +76,17 @@ Web-часть проекта `kailauz`.
 
 - `yarn install`
 - `yarn dev`
+- `yarn build`
 - `yarn start`
+
+## Деплой
+
+Рекомендуемый деплой для этого модуля — `Vercel`.
+
+Для Vercel достаточно:
+
+- импортировать репозиторий `kailauz/web`
+- оставить root directory как `./`
+- добавить env vars:
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`

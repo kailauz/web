@@ -1,17 +1,17 @@
 {
   "name": "kailauz-web",
   "private": true,
-  "version": "0.1.0",
-  "description": "Minimal landing and waitlist backend for kailauz.com",
-  "main": "server.js",
+  "version": "0.2.0",
+  "description": "kailauz landing on Next.js for Vercel deployment",
   "scripts": {
-    "dev": "node server.js",
-    "start": "NODE_ENV=production node server.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.8",
-    "dotenv": "^16.4.5",
-    "ws": "^8.21.0"
+    "next": "^14.2.30",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
