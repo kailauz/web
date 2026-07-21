@@ -94,6 +94,26 @@ h1 {
 }
 .description { max-width: 620px; margin-bottom: 14px; }
 .platforms { margin-bottom: 28px; }
+.waitlistCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+.waitlistCountDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b8c8ac;
+  box-shadow: 0 0 0 4px rgba(184, 200, 172, 0.1);
+}
 .waitlist {
   display: flex;
   gap: 12px;

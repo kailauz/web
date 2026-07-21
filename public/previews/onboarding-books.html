@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>kailauz onboarding preview</title>
+  <style>
+    :root{
+      --bg:#E6CCAB;
+      --surface:#EFE4D4;
+      --surface-2:#E1E1E1;
+      --text:#2F241E;
+      --muted:#5F5348;
+      --stroke:rgba(47,36,30,.10);
+      --peach:#E6CCAB;
+      --sand:#BDAD7F;
+      --rose:#DFB9B5;
+      --gold:#BDAD7F;
+      --selected:#F6EEE4;
+      --selected-text:#221914;
+      --shadow:0 24px 80px rgba(73,52,32,.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(223,185,181,.18), transparent 28%),
+        radial-gradient(circle at 80% 8%, rgba(225,225,225,.26), transparent 24%),
+        linear-gradient(180deg,#E6CCAB 0%,#EFE4D4 100%);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Avenir Next",sans-serif;
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+    .phone{
+      width:390px;
+      min-height:844px;
+      border-radius:44px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at top left, rgba(225,225,225,.34), transparent 28%),
+        radial-gradient(circle at top right, rgba(223,185,181,.20), transparent 22%),
+        var(--bg);
+      border:1px solid rgba(47,36,30,.10);
+      box-shadow:var(--shadow);
+    }
+    .screen{padding:22px 16px 24px}
+    .status-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:#4f4137;
+      font-size:13px;
+      padding:2px 6px 18px;
+      opacity:.88;
+    }
+    .hero{
+      padding:6px 6px 18px;
+      display:grid;
+      gap:14px;
+    }
+    .kicker{
+      display:inline-flex;
+      width:max-content;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.28);
+      border:1px solid var(--stroke);
+      font-size:12px;
+      color:#3b3029;
+    }
+    h1{
+      margin:0;
+      max-width:270px;
+      font-size:38px;
+      line-height:.95;
+      letter-spacing:-1.4px;
+      font-weight:800;
+    }
+    .cover-strip{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+    }
+    .cover-strip img{
+      width:100%;
+      aspect-ratio:.72/1;
+      border-radius:18px;
+      object-fit:cover;
+      background:#c7b394;
+      box-shadow:0 12px 24px rgba(0,0,0,.24);
+    }
+    .section{
+      margin-top:16px;
+      padding:18px;
+      border-radius:28px;
+      background:rgba(255,255,255,.38);
+      border:1px solid rgba(47,36,30,.10);
+      backdrop-filter:blur(10px);
+    }
+    .section-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .step{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .title{
+      font-size:24px;
+      line-height:.98;
+      letter-spacing:-.8px;
+      font-weight:800;
+    }
+    .count{
+      color:#5b4a3d;
+      font-size:13px;
+      padding-bottom:3px;
+      white-space:nowrap;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .chip{
+      border:none;
+      padding:12px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.34);
+      color:var(--text);
+      font-size:14px;
+      letter-spacing:-.2px;
+    }
+    .chip.selected{
+      background:var(--selected);
+      color:var(--selected-text);
+      box-shadow:0 10px 30px rgba(248,236,221,.20);
+    }
+    .books{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      max-height:520px;
+      overflow:hidden;
+      position:relative;
+    }
+    .books:after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:88px;
+      background:linear-gradient(180deg,rgba(230,204,171,0),rgba(230,204,171,.98));
+      pointer-events:none;
+    }
+    .book-card{
+      position:relative;
+      border-radius:22px;
+      overflow:hidden;
+      background:#d8c5ab;
+      min-height:170px;
+      border:1px solid transparent;
+    }
+    .book-card.selected{
+      border-color:rgba(189,173,127,.55);
+      box-shadow:0 16px 34px rgba(0,0,0,.24);
+    }
+    .book-cover{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      aspect-ratio:.72/1;
+    }
+    .book-meta{
+      position:absolute;
+      left:8px;
+      right:8px;
+      bottom:8px;
+      display:flex;
+      justify-content:flex-start;
+    }
+    .genre-pill{
+      display:inline-flex;
+      align-items:center;
+      min-height:24px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(239,228,212,.86);
+      backdrop-filter:blur(10px);
+      font-size:11px;
+      color:#3b3029;
+    }
+    .check{
+      position:absolute;
+      top:8px;
+      right:8px;
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      background:var(--selected);
+      color:#181512;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      box-shadow:0 8px 20px rgba(0,0,0,.25);
+    }
+    .cta-wrap{
+      position:sticky;
+      bottom:0;
+      margin-top:16px;
+      padding-top:10px;
+      background:linear-gradient(180deg,rgba(230,204,171,0),#E6CCAB 28%);
+    }
+    .cta{
+      width:100%;
+      min-height:58px;
+      border:none;
+      border-radius:20px;
+      background:linear-gradient(135deg,var(--peach),#f4e7d7);
+      color:#171310;
+      font-size:16px;
+      font-weight:800;
+      letter-spacing:-.2px;
+      box-shadow:0 18px 44px rgba(240,216,192,.16);
+    }
+    .dots{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      margin-top:12px;
+    }
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.16);
+    }
+    .dot.active{background:var(--peach)}
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <section class="screen">
+      <div class="status-bar"><span>9:41</span><span>5G</span></div>
+      <div class="hero">
+        <div class="kicker">kailauz</div>
+        <h1>Собираем твой вкус</h1>
+        <div class="cover-strip">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EA%20Day%20of%20Fallen%20Night%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ESamantha%20Shannon%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="A Day of Fallen Night" /><img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EGothic%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EA%20Study%20in%20Drowning%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EAva%20Reid%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="A Study in Drowning" /><img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EAssistant%20to%20the%20Villain%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EHannah%20Nicole%20Maehrer%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Assistant to the Villain" /><img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EBabel%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ER.%20F.%20Kuang%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Babel" />
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-top">
+          <div>
+            <div class="step">1 / 2</div>
+            <div class="title">Жанры</div>
+          </div>
+          <div class="count">3–5</div>
+        </div>
+        <div class="chips"><button class="chip selected">Фэнтези</button><button class="chip selected">Литературная проза</button><button class="chip selected">Научная фантастика</button><button class="chip selected">Нон-фикшн</button><button class="chip ">Психология</button></div>
+      </div>
+
+      <div class="section">
+        <div class="section-top">
+          <div>
+            <div class="step">2 / 2</div>
+            <div class="title">Книги</div>
+          </div>
+          <div class="count">12 / 10</div>
+        </div>
+        <div class="books">
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EA%20Day%20of%20Fallen%20Night%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ESamantha%20Shannon%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="A Day of Fallen Night" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EGothic%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EA%20Study%20in%20Drowning%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EAva%20Reid%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="A Study in Drowning" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Gothic</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EAssistant%20to%20the%20Villain%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EHannah%20Nicole%20Maehrer%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Assistant to the Villain" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EBabel%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ER.%20F.%20Kuang%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Babel" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EBabel%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ER.%20F.%20Kuang%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Babel" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EBlack%20Sun%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ERebecca%20Roanhorse%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Black Sun" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EYoung%20Adult%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EBloodmarked%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ETracy%20Deonn%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Bloodmarked" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Young Adult</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3ECozyfantasy%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EBookshops%20%26amp%3B%20Bonedust%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ETravis%20Baldree%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Bookshops &amp; Bonedust" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Cozyfantasy</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3ECozyfantasy%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ECan%26apos%3Bt%20Spell%20Treason%20Witho%E2%80%A6%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ERebecca%20Thorne%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Can&#39;t Spell Treason Without Tea" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Cozyfantasy</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%98%D1%81%D1%82%D0%BE%D1%80%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BF%D1%80%D0%BE%D0%B7%D0%B0%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ECirce%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EMadeline%20Miller%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Circe" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Историческая проза</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EYoung%20Adult%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ECrooked%20Kingdom%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ELeigh%20Bardugo%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Crooked Kingdom" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Young Adult</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card selected">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EDivine%20Rivals%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ERebecca%20Ross%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Divine Rivals" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          <div class="check">✓</div>
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3ECozyfantasy%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EEmily%20Wilde%26apos%3Bs%20Encyclopaed%E2%80%A6%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EHeather%20Fawcett%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Emily Wilde&#39;s Encyclopaedia of Faeries" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Cozyfantasy</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EEmily%20Wilde%26apos%3Bs%20Encyclopaed%E2%80%A6%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EHeather%20Fawcett%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Emily Wilde&#39;s Encyclopaedia of Faeries" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EGothic%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EGallant%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EV.%20E.%20Schwab%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Gallant" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Gothic</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EHalf%20a%20Soul%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EOlivia%20Atwater%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Half a Soul" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EHell%20Bent%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ELeigh%20Bardugo%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Hell Bent" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EGothic%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EHouse%20of%20Hollow%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EKrystal%20Sutherland%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="House of Hollow" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Gothic</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EJade%20City%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EFonda%20Lee%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Jade City" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EJonathan%20Strange%20%26amp%3B%20Mr%20Nor%E2%80%A6%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ESusanna%20Clarke%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Jonathan Strange &amp; Mr Norrell" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EYoung%20Adult%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ELegendborn%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ETracy%20Deonn%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Legendborn" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Young Adult</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3ECozyfantasy%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ELegends%20%26amp%3B%20Lattes%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ETravis%20Baldree%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Legends &amp; Lattes" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Cozyfantasy</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ENettle%20%26amp%3B%20Bone%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ET.%20Kingfisher%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Nettle &amp; Bone" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ENinth%20House%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ELeigh%20Bardugo%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Ninth House" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EGothic%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EOne%20Dark%20Window%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ERachel%20Gillig%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="One Dark Window" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Gothic</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A0%D0%BE%D0%BC%D0%B0%D0%BD%D1%82%D0%B8%D0%BA%D0%B0%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EOne%20Last%20Stop%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ECasey%20McQuiston%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="One Last Stop" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Романтика</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EOrdinary%20Monsters%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EJ.%20M.%20Miro%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Ordinary Monsters" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EPiranesi%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ESusanna%20Clarke%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Piranesi" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3EYoung%20Adult%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ESix%20of%20Crows%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3ELeigh%20Bardugo%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="Six of Crows" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Young Adult</div>
+          </div>
+          
+        </article>
+      
+        <article class="book-card ">
+          <img src="data:image/svg+xml;charset=utf-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20460%22%3E%0A%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23171d1a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%2331403a%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23cda17d%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22320%22%20height%3D%22460%22%20rx%3D%2226%22%20fill%3D%22url(%23g)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22254%22%20cy%3D%2288%22%20r%3D%2284%22%20fill%3D%22rgba(255%2C255%2C255%2C.10)%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2274%22%20cy%3D%22398%22%20r%3D%2298%22%20fill%3D%22rgba(255%2C255%2C255%2C.08)%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2226%22%20y%3D%2228%22%20width%3D%22122%22%20height%3D%2234%22%20rx%3D%2217%22%20fill%3D%22rgba(247%2C242%2C234%2C.16)%22%2F%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2287%22%20y%3D%2250%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2216%22%20font-family%3D%22Arial%2C%20sans-serif%22%20text-anchor%3D%22middle%22%3E%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22278%22%20fill%3D%22%23f7f2ea%22%20font-size%3D%2231%22%20font-weight%3D%22700%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EThe%20Adventures%20of%20Amina%20a%E2%80%A6%3C%2Ftext%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2226%22%20y%3D%22316%22%20fill%3D%22rgba(247%2C242%2C234%2C.78)%22%20font-size%3D%2220%22%20font-family%3D%22Arial%2C%20sans-serif%22%3EShannon%20Chakraborty%3C%2Ftext%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A%20%20" alt="The Adventures of Amina al-Sirafi" class="book-cover" />
+          <div class="book-meta">
+            <div class="genre-pill">Фэнтези</div>
+          </div>
+          
+        </article>
+      </div>
+      </div>
+
+      <div class="cta-wrap">
+        <button class="cta">Показать мой тип</button>
+        <div class="dots"><span class="dot active"></span><span class="dot active"></span></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

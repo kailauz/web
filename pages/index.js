@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const copy = {
   en: {
@@ -13,6 +13,7 @@ const copy = {
     waitlistLabel: 'Email',
     waitlistButton: 'Join the waiting list',
     waitlistCaption: 'We will only write when early access becomes available.',
+    waitlistCount: (count) => `${count.toLocaleString('en-US')} people are already on the waiting list.`,
     consentLabel:
       'I agree to receive product news, updates, and early access emails from kailauz.',
     consentError: 'Please confirm that you agree to receive email updates.',
@@ -34,6 +35,7 @@ const copy = {
     waitlistLabel: 'Email',
     waitlistButton: 'Записаться в список ожидания',
     waitlistCaption: 'Напишем только тогда, когда откроем ранний доступ.',
+    waitlistCount: (count) => `Уже ${count.toLocaleString('ru-RU')} человек в списке ожидания.`,
     consentLabel:
       'Я соглашаюсь получать новости о продукте, обновления и письма о раннем доступе от kailauz.',
     consentError: 'Подтвердите согласие на получение email-обновлений.',
@@ -52,7 +54,23 @@ export default function Home() {
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
+  const [waitlistCount, setWaitlistCount] = useState(null);
   const t = useMemo(() => copy[lang], [lang]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch('/api/waitlist', { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload) => {
+        if (Number.isSafeInteger(payload?.count) && payload.count >= 0) {
+          setWaitlistCount(payload.count);
+        }
+      })
+      .catch(() => undefined);
+
+    return () => controller.abort();
+  }, []);
 
   const title =
     lang === 'ru'
@@ -95,6 +113,9 @@ export default function Home() {
 
       setEmail('');
       setConsent(false);
+      if (Number.isSafeInteger(payload.count) && payload.count >= 0) {
+        setWaitlistCount(payload.count);
+      }
       setStatus({ type: 'success', message: t.waitlistSuccess });
     } catch (error) {
       setStatus({ type: 'error', message: t.waitlistServerError });
@@ -153,6 +174,12 @@ export default function Home() {
             <h1>{t.title}</h1>
             <p className="description">{t.description}</p>
             <p className="platforms">{t.platforms}</p>
+            {waitlistCount !== null ? (
+              <p className="waitlistCount" aria-live="polite">
+                <span className="waitlistCountDot" aria-hidden="true" />
+                {t.waitlistCount(waitlistCount)}
+              </p>
+            ) : null}
             <form className="waitlist" id="waitlist" onSubmit={handleSubmit}>
               <label className="srOnly" htmlFor="email">{t.waitlistLabel}</label>
               <input

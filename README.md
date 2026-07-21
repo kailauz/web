@@ -20,6 +20,7 @@ Web-часть проекта `kailauz`.
 - `public/site.webmanifest` — manifest
 - `sql/001_waitlist.sql` — таблица и policy для waitlist в Supabase
 - `sql/002_waitlist_consent.sql` — consent-поля для waitlist
+- `sql/003_waitlist_count.sql` — безопасная aggregate RPC для публичного счётчика без доступа к email
 
 ## Что делает текущий сайт
 
@@ -48,6 +49,9 @@ Web-часть проекта `kailauz`.
 
 Waitlist работает через `pages/api/waitlist.js`.
 
+- `GET` возвращает только количество подтверждённых записей и кешируется на CDN;
+- `POST` сохраняет email и возвращает обновлённое количество, если count RPC уже применена.
+
 Endpoint:
 
 - валидирует email
@@ -71,9 +75,10 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
 1. Убедиться, что в `apps/web/.env` заданы `NEXT_PUBLIC_SUPABASE_URL` и `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 2. Выполнить SQL из `apps/web/sql/001_waitlist.sql` в Supabase SQL Editor.
 3. Выполнить SQL из `apps/web/sql/002_waitlist_consent.sql` в Supabase SQL Editor.
-4. Выполнить `yarn install` внутри `apps/web`.
-5. Выполнить `yarn dev` внутри `apps/web`.
-6. Открыть `http://localhost:3000`.
+4. Выполнить SQL из `apps/web/sql/003_waitlist_count.sql` в Supabase SQL Editor.
+5. Выполнить `yarn install` из корня монорепозитория.
+6. Выполнить `yarn workspace kailauz-web dev`.
+7. Открыть `http://localhost:3000`.
 
 ## Пакетный менеджер
 
@@ -81,10 +86,10 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
 
 Базовые команды:
 
-- `yarn install`
-- `yarn dev`
-- `yarn build`
-- `yarn start`
+- `yarn install --frozen-lockfile`
+- `yarn workspace kailauz-web dev`
+- `yarn workspace kailauz-web build`
+- `yarn workspace kailauz-web start`
 
 ## Деплой
 
