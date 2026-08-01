@@ -142,6 +142,7 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.kailauz.com/logo.png" />
         <meta name="twitter:image" content="https://www.kailauz.com/logo.png" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <meta property="og:url" content={lang === 'ru' ? 'https://www.kailauz.com/?lang=ru' : 'https://www.kailauz.com/'} />
