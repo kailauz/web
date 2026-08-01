@@ -63,7 +63,7 @@ Endpoint:
 
 ## Env
 
-В `apps/web/.env` должны быть:
+В корневом `.env` должны быть:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=...
@@ -72,7 +72,7 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
 
 ## Как запустить локально
 
-1. Убедиться, что в `apps/web/.env` заданы `NEXT_PUBLIC_SUPABASE_URL` и `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+1. Убедиться, что в корневом `.env` заданы `NEXT_PUBLIC_SUPABASE_URL` и `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 2. Выполнить SQL из `apps/web/sql/001_waitlist.sql` в Supabase SQL Editor.
 3. Выполнить SQL из `apps/web/sql/002_waitlist_consent.sql` в Supabase SQL Editor.
 4. Выполнить SQL из `apps/web/sql/003_waitlist_count.sql` в Supabase SQL Editor.

@@ -140,9 +140,10 @@ export default function Home() {
         <link rel="alternate" hrefLang="ru" href="https://www.kailauz.com/?lang=ru" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kailauz.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.kailauz.com/logo_1024.png" />
-        <meta name="twitter:image" content="https://www.kailauz.com/logo_1024.png" />
-        <link rel="icon" type="image/jpeg" href="/logo_256.png" />
+        <meta property="og:image" content="https://www.kailauz.com/logo.png" />
+        <meta name="twitter:image" content="https://www.kailauz.com/logo.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
         <meta property="og:url" content={lang === 'ru' ? 'https://www.kailauz.com/?lang=ru' : 'https://www.kailauz.com/'} />
         <meta property="og:title" content="kailauz" />
         <meta property="og:description" content={description} />
@@ -156,7 +157,7 @@ export default function Home() {
       <main className="page">
         <header className="header">
           <div className="brand">
-            <img src="/logo_1024.png" alt="kailauz" className="brandLogo" />
+            <img src="/logo.png" alt="kailauz" className="brandLogo" />
           </div>
           <div className="headerActions">
             <a href="https://t.me/kailauz" className="waitlistLink" target="_blank" rel="noreferrer">{t.navTelegram}</a>

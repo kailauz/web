@@ -144,7 +144,7 @@ function parseEnvFile(filePath) {
 }
 
 function getConfig() {
-  const webEnv = parseEnvFile(path.resolve(__dirname, '../.env'));
+  const webEnv = parseEnvFile(path.resolve(__dirname, '../../../.env'));
   return {
     supabaseUrl:
       process.env.SUPABASE_URL ||
@@ -210,8 +210,8 @@ function topEntries(counts, limit = 6) {
     .map(([value, count]) => ({ value, count }));
 }
 
-function formatDisplayName(user) {
-  return user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Читатель';
+function formatDisplayName(user, profile) {
+  return profile?.display_name || user?.email?.split('@')[0] || 'Читатель';
 }
 
 function escapeHtml(value) {
@@ -1126,10 +1126,14 @@ async function main() {
   const demoUsers = authUsers.filter((user) => DEMO_USERS.includes(String(user.id)));
   const userIds = demoUsers.map((user) => String(user.id));
 
-  const [readerProfiles, userBooks, catalogBooks] = await Promise.all([
-    selectTable(config, 'reader_profiles', {
+  const [readerProfiles, productProfiles, userBooks, catalogBooks] = await Promise.all([
+    selectTable(config, 'reader_taste_profiles', {
       select: '*',
       user_id: `in.(${userIds.join(',')})`,
+    }),
+    selectTable(config, 'profiles', {
+      select: 'id,display_name',
+      id: `in.(${userIds.join(',')})`,
     }),
     selectTable(config, 'user_books', {
       select: 'user_id,book_id,status,rating,started_at,finished_at,progress_percent,updated_at,comment,notes',
@@ -1154,6 +1158,7 @@ async function main() {
   const allBooks = uniqueById([...catalogBooks, ...relatedBooks]);
   const booksById = new Map(allBooks.map((book) => [String(book.id), book]));
   const profilesByUserId = new Map(readerProfiles.map((profile) => [String(profile.user_id), profile]));
+  const productProfilesByUserId = new Map(productProfiles.map((profile) => [String(profile.id), profile]));
 
   const onboardingGenreCounts = collectGenreCounts(allBooks);
   const topGenres = topEntries(onboardingGenreCounts, 10);
@@ -1238,7 +1243,10 @@ async function main() {
   });
 
   const homeHtml = buildHomeHtml({
-    displayName: formatDisplayName(homeUser || {}),
+    displayName: formatDisplayName(
+      homeUser || {},
+      productProfilesByUserId.get(String(homeUser?.id || '')),
+    ),
     profileSummary: String(homeProfile?.profile_summary || '').trim(),
     totalBooks: homeUserBooks.length,
     readCount: readEntries.length,
