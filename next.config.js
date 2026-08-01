@@ -1,6 +1,11 @@
-const { loadRootEnv } = require('../../scripts/load-root-env.cjs');
+const { existsSync } = require('fs');
+const { resolve } = require('path');
 
-loadRootEnv();
+const rootEnvLoaderPath = resolve(__dirname, '../../scripts/load-root-env.cjs');
+
+if (existsSync(rootEnvLoaderPath)) {
+  require(rootEnvLoaderPath).loadRootEnv();
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
