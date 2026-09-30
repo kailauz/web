@@ -1,17 +1,20 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
+
+import ProfilePreview from '../components/ProfilePreview';
+import styles from '../styles/Landing.module.css';
 
 const copy = {
   en: {
     navWaitlist: 'Waiting list',
     navTelegram: 'Telegram',
-    label: 'Reading app',
-    title: 'kailauz helps you keep track of books and get better recommendations.',
-    description:
-      'A new reading app for people who want to remember what they read, understand their taste, and choose the next book more consciously.',
+    title: 'Your reading',
+    titleAccent: 'journal.',
+    description: 'Your library, reading progress and recommendations to match your taste.',
     platforms: 'Coming to iOS and Android.',
     waitlistLabel: 'Email',
-    waitlistButton: 'Join the waiting list',
+    waitlistButton: 'Get early access',
     waitlistCaption: 'We will only write when early access becomes available.',
     waitlistCount: (count) => `${count.toLocaleString('en-US')} people are already on the waiting list.`,
     consentLabel:
@@ -27,13 +30,12 @@ const copy = {
   ru: {
     navWaitlist: 'Список ожидания',
     navTelegram: 'Telegram',
-    label: 'Приложение для чтения',
-    title: 'kailauz поможет вести список книг и получать более точные рекомендации.',
-    description:
-      'Новое приложение для тех, кто хочет помнить прочитанное, лучше понимать свой вкус и осознанно выбирать следующую книгу.',
+    title: 'Твой дневник',
+    titleAccent: 'чтения.',
+    description: 'Библиотека, прогресс и рекомендации по твоему вкусу.',
     platforms: 'Скоро на iOS и Android.',
     waitlistLabel: 'Email',
-    waitlistButton: 'Записаться в список ожидания',
+    waitlistButton: 'Получить ранний доступ',
     waitlistCaption: 'Напишем только тогда, когда откроем ранний доступ.',
     waitlistCount: (count) => `Уже ${count.toLocaleString('ru-RU')} человек в списке ожидания.`,
     consentLabel:
@@ -49,13 +51,18 @@ const copy = {
 };
 
 export default function Home() {
-  const [lang, setLang] = useState('en');
+  const router = useRouter();
+  const [lang, setLang] = useState('ru');
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [waitlistCount, setWaitlistCount] = useState(null);
   const t = useMemo(() => copy[lang], [lang]);
+
+  useEffect(() => {
+    if (router.isReady) setLang(router.query.lang === 'en' ? 'en' : 'ru');
+  }, [router.isReady, router.query.lang]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -134,10 +141,10 @@ export default function Home() {
           content="kailauz, reading app, book app, AI book recommendations, reading tracker, книжное приложение, рекомендации книг, трекер чтения"
         />
         <meta name="robots" content="index, follow" />
-        <meta name="theme-color" content="#0b0b0d" />
-        <link rel="canonical" href={lang === 'ru' ? 'https://www.kailauz.com/?lang=ru' : 'https://www.kailauz.com/'} />
-        <link rel="alternate" hrefLang="en" href="https://www.kailauz.com/" />
-        <link rel="alternate" hrefLang="ru" href="https://www.kailauz.com/?lang=ru" />
+        <meta name="theme-color" content="#FAF8F4" />
+        <link rel="canonical" href={lang === 'en' ? 'https://www.kailauz.com/?lang=en' : 'https://www.kailauz.com/'} />
+        <link rel="alternate" hrefLang="en" href="https://www.kailauz.com/?lang=en" />
+        <link rel="alternate" hrefLang="ru" href="https://www.kailauz.com/" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kailauz.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.kailauz.com/logo.png" />
@@ -145,84 +152,94 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
-        <meta property="og:url" content={lang === 'ru' ? 'https://www.kailauz.com/?lang=ru' : 'https://www.kailauz.com/'} />
+        <meta property="og:url" content={lang === 'en' ? 'https://www.kailauz.com/?lang=en' : 'https://www.kailauz.com/'} />
         <meta property="og:title" content="kailauz" />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content="kailauz" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="kailauz" />
         <meta name="twitter:description" content={description} />
+        <link rel="preload" href="/landing/fonts/Literata_400Regular.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
+        <link rel="preload" href="/landing/fonts/Manrope_400Regular.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
 
-      <main className="page">
-        <header className="header">
-          <div className="brand">
-            <img src="/logo.png" alt="kailauz" className="brandLogo" />
-          </div>
-          <div className="headerActions">
-            <a href="https://t.me/kailauz" className="waitlistLink" target="_blank" rel="noreferrer">{t.navTelegram}</a>
-            <a href="#waitlist" className="waitlistLink">{t.navWaitlist}</a>
-            <div className="langSwitch" aria-label="Language switcher">
-              <button className={lang === 'en' ? 'langBtn active' : 'langBtn'} type="button" onClick={() => setLang('en')}>EN</button>
-              <button className={lang === 'ru' ? 'langBtn active' : 'langBtn'} type="button" onClick={() => setLang('ru')}>RU</button>
+      <main className={styles.landing} lang={lang}>
+        <div className={styles.container}>
+          <header className={styles.header}>
+            <a href="/" className={styles.brand} aria-label="kailauz">kailauz</a>
+            <nav className={styles.navigation} aria-label={lang === 'ru' ? 'Навигация' : 'Navigation'}>
+              <a href="#waitlist">{t.navWaitlist}</a>
+              <a href="https://t.me/kailauz" target="_blank" rel="noreferrer">{t.navTelegram}</a>
+            </nav>
+            <div className={styles.langSwitch} role="group" aria-label={lang === 'ru' ? 'Язык сайта' : 'Language'}>
+              <button aria-pressed={lang === 'ru'} type="button" onClick={() => setLang('ru')}>RU</button>
+              <span aria-hidden="true">/</span>
+              <button aria-pressed={lang === 'en'} type="button" onClick={() => setLang('en')}>EN</button>
             </div>
-          </div>
-        </header>
+          </header>
 
-        <section className="hero">
-          <div className="heroContent">
-            <p className="label">{t.label}</p>
-            <h1>{t.title}</h1>
-            <p className="description">{t.description}</p>
-            <p className="platforms">{t.platforms}</p>
-            {waitlistCount !== null ? (
-              <p className="waitlistCount" aria-live="polite">
-                <span className="waitlistCountDot" aria-hidden="true" />
-                {t.waitlistCount(waitlistCount)}
+          <section className={styles.hero} aria-labelledby="hero-title">
+            <div className={styles.intro}>
+              <h1 id="hero-title">{t.title} <span>{t.titleAccent}</span></h1>
+              <p className={styles.description}>{t.description}</p>
+            </div>
+
+            <div className={styles.product}>
+              <ProfilePreview lang={lang} />
+            </div>
+
+            <div className={styles.signup}>
+              <p className={styles.platforms}>{t.platforms}</p>
+              {waitlistCount !== null ? (
+                <p className={styles.waitlistCount} aria-live="polite">
+                  <span className={styles.waitlistCountDot} aria-hidden="true" />
+                  {t.waitlistCount(waitlistCount)}
+                </p>
+              ) : null}
+              <form className={styles.waitlist} id="waitlist" onSubmit={handleSubmit} aria-busy={loading}>
+                <label className="srOnly" htmlFor="email">{t.waitlistLabel}</label>
+                <div className={styles.formControls}>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    required
+                  />
+                  <button type="submit" className={styles.primaryButton} disabled={loading}>
+                    {loading ? '...' : t.waitlistButton}
+                  </button>
+                </div>
+              </form>
+              <label className={styles.consentRow} htmlFor="consent">
+                <input
+                  id="consent"
+                  name="consent"
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(event) => setConsent(event.target.checked)}
+                  required
+                />
+                <span>{t.consentLabel}</span>
+              </label>
+              <p className={styles.note}>{t.waitlistCaption}</p>
+              <p className={styles.note}>
+                <a href="https://t.me/kailauz" target="_blank" rel="noreferrer">
+                  {t.telegramLabel} — @kailauz
+                </a>
               </p>
-            ) : null}
-            <form className="waitlist" id="waitlist" onSubmit={handleSubmit}>
-              <label className="srOnly" htmlFor="email">{t.waitlistLabel}</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-              />
-              <button type="submit" className="primaryButton" disabled={loading}>
-                {loading ? '...' : t.waitlistButton}
-              </button>
-            </form>
-            <label className="consentRow" htmlFor="consent">
-              <input
-                id="consent"
-                name="consent"
-                type="checkbox"
-                checked={consent}
-                onChange={(event) => setConsent(event.target.checked)}
-                required
-              />
-              <span>{t.consentLabel}</span>
-            </label>
-            <p className="note">{t.waitlistCaption}</p>
-            <p className="note">
-              <a href="https://t.me/kailauz" className="telegramLink" target="_blank" rel="noreferrer">
-                {t.telegramLabel} — @kailauz
-              </a>
-            </p>
-            <p className="legalLinks">
-              <a href={lang === 'ru' ? '/privacy?lang=ru' : '/privacy'}>{t.privacy}</a>
-              <span>·</span>
-              <a href={lang === 'ru' ? '/terms?lang=ru' : '/terms'}>{t.terms}</a>
-            </p>
-            <p className={status.type ? `status ${status.type}` : 'status'}>{status.message}</p>
-          </div>
-        </section>
+              <p className={styles.legalLinks}>
+                <a href={lang === 'ru' ? '/privacy?lang=ru' : '/privacy'}>{t.privacy}</a>
+                <a href={lang === 'ru' ? '/terms?lang=ru' : '/terms'}>{t.terms}</a>
+              </p>
+              <p className={`${styles.status} ${status.type === 'error' ? styles.error : styles.success}`} role="status" aria-live="polite">{status.message}</p>
+            </div>
+          </section>
+        </div>
       </main>
     </>
   );
