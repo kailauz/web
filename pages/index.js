@@ -7,7 +7,6 @@ import styles from '../styles/Landing.module.css';
 
 const copy = {
   en: {
-    navWaitlist: 'Waiting list',
     navTelegram: 'Telegram',
     title: 'Your reading',
     titleAccent: 'journal.',
@@ -28,7 +27,6 @@ const copy = {
     terms: 'Terms of Use'
   },
   ru: {
-    navWaitlist: 'Список ожидания',
     navTelegram: 'Telegram',
     title: 'Твой дневник',
     titleAccent: 'чтения.',
@@ -172,7 +170,6 @@ export default function Home() {
             </a>
             <nav className={styles.navigation} aria-label={lang === 'ru' ? 'Навигация' : 'Navigation'}>
               <a href="https://t.me/kailauz" target="_blank" rel="noreferrer">{t.navTelegram}</a>
-              <a href="#waitlist">{t.navWaitlist}</a>
             </nav>
             <div className={styles.langSwitch} role="group" aria-label={lang === 'ru' ? 'Язык сайта' : 'Language'}>
               <button aria-pressed={lang === 'ru'} type="button" onClick={() => setLang('ru')}>RU</button>
@@ -200,7 +197,7 @@ export default function Home() {
                   {t.waitlistCount(waitlistCount)}
                 </p>
               ) : null}
-              <form className={styles.waitlist} id="waitlist" onSubmit={handleSubmit} aria-busy={loading}>
+              <form id="waitlist" onSubmit={handleSubmit} aria-busy={loading}>
                 <label className="srOnly" htmlFor="email">{t.waitlistLabel}</label>
                 <div className={styles.formControls}>
                   <input
@@ -236,8 +233,8 @@ export default function Home() {
                 </a>
               </p>
               <p className={styles.legalLinks}>
-                <a href={lang === 'ru' ? '/privacy?lang=ru' : '/privacy'}>{t.privacy}</a>
-                <a href={lang === 'ru' ? '/terms?lang=ru' : '/terms'}>{t.terms}</a>
+                <a href={lang === 'en' ? '/privacy?lang=en' : '/privacy'}>{t.privacy}</a>
+                <a href={lang === 'en' ? '/terms?lang=en' : '/terms'}>{t.terms}</a>
               </p>
               <p className={`${styles.status} ${status.type === 'error' ? styles.error : styles.success}`} role="status" aria-live="polite">{status.message}</p>
             </div>

@@ -39,7 +39,7 @@
   font-family: 'Kailauz Manrope', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-.landing::before, .phoneScreen::before {
+.landing::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -118,7 +118,6 @@
   line-height: 1.5;
 }
 .waitlistCountDot { flex: 0 0 7px; height: 7px; border-radius: 50%; background: #58834D; }
-.waitlist { scroll-margin-top: 24px; }
 .formControls { display: flex; gap: 12px; }
 .formControls input {
   width: 100%;
@@ -164,20 +163,17 @@
   padding: 8px;
   border: 2px solid #797776;
   border-radius: 50px;
-  background: #151515;
-  box-shadow: inset 0 0 0 2px #353535, 0 20px 44px -22px #4B403640;
+  background: transparent;
+  box-shadow: inset 0 0 0 2px #353535, inset 0 0 0 8px #151515, 0 20px 44px -22px #4B403640;
 }
 .phoneScreen {
   position: relative;
-  isolation: isolate;
   display: flex;
   flex-direction: column;
   aspect-ratio: 393 / 852;
   overflow: hidden;
   border-radius: 39px;
-  background: var(--canvas);
 }
-.phoneScreen::before { background-size: cover; opacity: .12; }
 .icon { display: inline-block; font-family: 'Kailauz Ionicons'; font-weight: 400; font-style: normal; line-height: 1; }
 .phoneStatus { position: relative; flex: 0 0 14cqw; display: flex; align-items: center; justify-content: space-between; padding: 0 7cqw; color: #151515; font-size: 3.5cqw; font-weight: 600; }
 .phoneIsland { position: absolute; width: 30cqw; height: 8cqw; left: 50%; top: 3cqw; transform: translateX(-50%); border-radius: 20px; background: #111; }
@@ -201,7 +197,7 @@
 .profileRow div { min-width: 0; }
 .profileRow p { margin: 0 0 .5cqw; font-size: 3.6cqw; font-weight: 600; }
 .profileRow div > span { display: block; color: var(--muted-ink); font-size: 2.65cqw; line-height: 1.5; }
-.phoneTabs { flex: 0 0 16cqw; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; padding: 2cqw 2cqw 1cqw; border-top: 1px solid var(--quiet-border); background: rgba(250, 248, 244, .9); }
+.phoneTabs { flex: 0 0 16cqw; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; padding: 2cqw 2cqw 1cqw; border-top: 1px solid var(--quiet-border); }
 .phoneTabs > div { display: flex; flex-direction: column; align-items: center; gap: 1cqw; color: var(--muted-ink); font-size: 2.3cqw; line-height: 1.6; }
 .phoneTabs .icon { font-size: 6cqw; }
 .phoneTabs .selectedTab { color: var(--plum); }
