@@ -183,6 +183,7 @@ export default function Home() {
 
           <section className={styles.hero} aria-labelledby="hero-title">
             <div className={styles.intro}>
+              <p className={styles.productName}>kailauz</p>
               <h1 id="hero-title">{t.title} <span>{t.titleAccent}</span></h1>
               <p className={styles.description}>{t.description}</p>
             </div>
