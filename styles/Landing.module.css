@@ -59,14 +59,15 @@
   padding-block: 28px;
 }
 .brand {
-  color: var(--plum);
-  font: 400 36px/1.2 var(--editorial-font);
-  letter-spacing: -1.4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
-.navigation { display: flex; align-items: center; gap: 28px; font-size: 14px; color: var(--secondary); }
-.navigation a { padding-block: 12px; }
+.brandLogo { display: block; width: auto; height: 34px; }
+.navigation { margin-left: auto; display: flex; align-items: center; gap: 28px; font-size: 14px; line-height: 20px; color: var(--secondary); }
+.navigation a { display: flex; align-items: center; min-height: 44px; white-space: nowrap; }
 .navigation a:hover, .note a:hover, .legalLinks a:hover { color: var(--plum); }
-.langSwitch { margin-left: auto; display: flex; align-items: center; gap: 4px; color: var(--muted-ink); }
+.langSwitch { display: flex; align-items: center; gap: 4px; color: var(--muted-ink); }
 .langSwitch button {
   min-height: 44px;
   min-width: 44px;
@@ -75,6 +76,7 @@
   background: transparent;
   color: inherit;
   font-size: 14px;
+  line-height: 20px;
   cursor: pointer;
 }
 .langSwitch button:last-child { min-width: 36px; padding-right: 0; text-align: right; }
@@ -216,7 +218,6 @@
 @media (max-width: 900px) {
   .container { width: min(calc(100% - 48px), 640px); }
   .header { gap: 24px; padding-block: 20px; }
-  .brand { font-size: 30px; }
   .navigation { gap: 18px; font-size: 12px; }
   .hero { grid-template-columns: minmax(0, 1fr); row-gap: 36px; padding-block: 24px 48px; }
   .intro { grid-area: auto; }
@@ -227,11 +228,11 @@
 }
 @media (max-width: 520px) {
   .container { width: calc(100% - 40px); }
-  .header { gap: 8px 20px; flex-wrap: wrap; }
-  .brand { font-size: 28px; }
-  .langSwitch { order: 1; }
-  .navigation { order: 2; flex-basis: 100%; gap: 24px; }
-  .navigation a { padding-block: 8px; }
+  .header { gap: 10px; }
+  .navigation { gap: 10px; font-size: 11px; }
+  .langSwitch { gap: 0; }
+  .langSwitch button { min-width: 28px; padding-inline: 4px; font-size: 12px; }
+  .langSwitch button:last-child { min-width: 24px; }
   .hero { padding-top: 20px; }
   .intro h1 { font-size: clamp(19px, 5.5vw, 28px); letter-spacing: -.04em; }
   .formControls { flex-direction: column; }

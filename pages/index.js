@@ -167,10 +167,12 @@ export default function Home() {
       <main className={styles.landing} lang={lang}>
         <div className={styles.container}>
           <header className={styles.header}>
-            <a href="/" className={styles.brand} aria-label="kailauz">kailauz</a>
+            <a href="/" className={styles.brand} aria-label="kailauz">
+              <img src="/logo.png" alt="kailauz" className={styles.brandLogo} />
+            </a>
             <nav className={styles.navigation} aria-label={lang === 'ru' ? 'Навигация' : 'Navigation'}>
-              <a href="#waitlist">{t.navWaitlist}</a>
               <a href="https://t.me/kailauz" target="_blank" rel="noreferrer">{t.navTelegram}</a>
+              <a href="#waitlist">{t.navWaitlist}</a>
             </nav>
             <div className={styles.langSwitch} role="group" aria-label={lang === 'ru' ? 'Язык сайта' : 'Language'}>
               <button aria-pressed={lang === 'ru'} type="button" onClick={() => setLang('ru')}>RU</button>
