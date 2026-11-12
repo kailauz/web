@@ -6,12 +6,12 @@ const copy = {
   "ru": {
     "title": "Условия использования",
     "back": "На главную",
-    "updated": "Последнее обновление: 30 сентября 2026",
+    "updated": "Последнее обновление: 29 октября 2026",
     "intro": "Эти условия регулируют использование мобильного приложения kailauz, сайта и поддержки. Используя сервис, вы соглашаетесь с этими условиями в пределах применимого законодательства.",
     "sections": [
       {
         "title": "Что предоставляет kailauz",
-        "body": "kailauz — личный читательский дневник. В приложении доступны библиотека и полки, поиск и карточки книг, статусы и прогресс чтения, оценки и заметки, календарь и статистика, профиль и рекомендации, импорт текстом, голосом, по штрихкоду и из LiveLib, достижения и поддержка."
+        "body": "kailauz — личный читательский дневник. В приложении доступны библиотека и полки, поиск и карточки книг, статусы и прогресс чтения, оценки и заметки, календарь и статистика, профиль и рекомендации, импорт текстом, по штрихкоду и из LiveLib, достижения и поддержка."
       },
       {
         "title": "Аккаунт",
@@ -23,7 +23,7 @@ const copy = {
       },
       {
         "title": "Импорт книг",
-        "body": "Для импорта из LiveLib используйте свой публичный профиль или данные, на перенос которых у вас есть разрешение. При текстовом, голосовом и штрихкодном импорте проверяйте найденные книги, издания, оценки и даты перед подтверждением. Совпадения и полнота переноса зависят от исходных данных и доступности внешних каталогов. kailauz не является сервисом LiveLib и не управляет его работой."
+        "body": "Для импорта из LiveLib используйте свой публичный профиль или данные, на перенос которых у вас есть разрешение. При текстовом и штрихкодном импорте проверяйте найденные книги, издания, оценки и даты перед подтверждением. Совпадения и полнота переноса зависят от исходных данных и доступности внешних каталогов. kailauz не является сервисом LiveLib и не управляет его работой."
       },
       {
         "title": "Рекомендации и читательский портрет",
@@ -62,12 +62,12 @@ const copy = {
   "en": {
     "title": "Terms of Use",
     "back": "Back to home",
-    "updated": "Last updated: September 30, 2026",
+    "updated": "Last updated: October 29, 2026",
     "intro": "These terms govern the kailauz mobile app, website and support. By using the service, you agree to these terms subject to applicable law.",
     "sections": [
       {
         "title": "What kailauz provides",
-        "body": "kailauz is a personal reading journal. The app provides a library and shelves, book search and details, reading statuses and progress, ratings and notes, a calendar and statistics, a profile and recommendations, text, voice, barcode and LiveLib imports, achievements and support."
+        "body": "kailauz is a personal reading journal. The app provides a library and shelves, book search and details, reading statuses and progress, ratings and notes, a calendar and statistics, a profile and recommendations, text, barcode and LiveLib imports, achievements and support."
       },
       {
         "title": "Your account",
@@ -79,7 +79,7 @@ const copy = {
       },
       {
         "title": "Book imports",
-        "body": "For LiveLib import, use your own public profile or data you have permission to transfer. With text, voice and barcode imports, review matched books, editions, ratings and dates before confirming. Matching and completeness depend on source data and external catalogue availability. kailauz is independent of LiveLib and does not control its operation."
+        "body": "For LiveLib import, use your own public profile or data you have permission to transfer. With text and barcode imports, review matched books, editions, ratings and dates before confirming. Matching and completeness depend on source data and external catalogue availability. kailauz is independent of LiveLib and does not control its operation."
       },
       {
         "title": "Recommendations and reader portrait",

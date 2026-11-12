@@ -6,7 +6,7 @@ const copy = {
   "ru": {
     "title": "Политика конфиденциальности",
     "back": "На главную",
-    "updated": "Последнее обновление: 30 сентября 2026",
+    "updated": "Последнее обновление: 14 октября 2026",
     "intro": "Здесь описано, какие данные kailauz обрабатывает при использовании приложения и сайта, зачем они нужны и как вы можете ими управлять.",
     "sections": [
       {
@@ -22,8 +22,8 @@ const copy = {
         "body": "Мы сохраняем добавленные книги и полки, статусы чтения, оценки, заметки, даты, прогресс, страницы и сессии чтения. Эти данные нужны для синхронизации библиотеки, календаря, статистики, учёта перечитываний и достижений. Личные записи и читательский профиль не публикуются в социальной ленте или публичной библиотеке."
       },
       {
-        "title": "Импорт текстом, голосом и по штрихкоду",
-        "body": "При текстовом импорте обрабатываются введённый текст и результат распознавания книг. Голосовой импорт использует запись с вашего микрофона, её расшифровку и извлечённые сведения. Камера запрашивается для сканирования штрихкода; для поиска книги передаётся распознанный код. Разрешения камеры и микрофона можно отключить в настройках устройства; остальные способы добавления книг остаются доступны."
+        "title": "Импорт текстом и по штрихкоду",
+        "body": "При текстовом импорте обрабатываются введённый текст и результат распознавания книг. Камера запрашивается для сканирования штрихкода; для поиска книги передаётся распознанный код. Разрешение камеры можно отключить в настройках устройства; остальные способы добавления книг остаются доступны."
       },
       {
         "title": "Импорт из LiveLib",
@@ -31,7 +31,7 @@ const copy = {
       },
       {
         "title": "Автоматическая обработка и рекомендации",
-        "body": "Для распознавания голосовой записи и разбора текста импорта используется OpenAI: сервису передаются соответствующая запись или текст, включая заметки, если вы включили их во ввод. Не добавляйте во ввод сведения, которыми не хотите делиться для этой обработки. Книги, оценки, предпочтения и реакции используются для рекомендаций и читательского портрета. Автоматические результаты могут быть неточными; данные импорта можно проверить перед сохранением."
+        "body": "Для разбора текста импорта используется OpenAI: сервису передаётся введённый текст, включая заметки, если вы включили их во ввод. Не добавляйте во ввод сведения, которыми не хотите делиться для этой обработки. Книги, оценки, предпочтения и реакции используются для рекомендаций и читательского портрета. При нажатии кнопки ИИ-подборки OpenAI получает параметры выбранного намерения, язык, сведения о книгах-кандидатах и сигналы их соответствия. Email, идентификатор аккаунта и личные заметки в этот запрос не включаются. Автоматические результаты могут быть неточными; данные импорта можно проверить перед сохранением."
       },
       {
         "title": "Поддержка и диагностика",
@@ -47,11 +47,11 @@ const copy = {
       },
       {
         "title": "Сервисы, которым передаются данные",
-        "body": "Для авторизации и хранения используются Supabase, для размещения сайта — Vercel, для обработки голосового и текстового импорта — OpenAI. Поиск книг может обращаться к Google Books и Open Library, а импорт из LiveLib — к LiveLib. Эти запросы содержат данные, необходимые соответствующей функции. Обложки и другие материалы могут загружаться с внешних серверов. Обработка поставщиками может происходить за пределами вашей страны. Мы не продаём личные записи пользователей."
+        "body": "Для авторизации и хранения используются Supabase, для размещения сайта — Vercel, для обработки текстового импорта и запрошенной ИИ-подборки — OpenAI. Поиск книг может обращаться к Google Books и Open Library, а импорт из LiveLib — к LiveLib. Эти запросы содержат данные, необходимые соответствующей функции. Обложки и другие материалы могут загружаться с внешних серверов. Обработка поставщиками может происходить за пределами вашей страны. Мы не продаём личные записи пользователей."
       },
       {
         "title": "Хранение и удаление",
-        "body": "Данные аккаунта и чтения хранятся для работы вашей библиотеки. Исходная голосовая запись предназначена для обработки импорта: после успешного распознавания и разбора система запрашивает её удаление; при ошибке обработки или удаления запись может сохраняться дольше. Расшифровка и результаты импорта сохраняются отдельно. Обращения и технические записи хранятся, пока нужны для решения проблем, защиты сервиса и выполнения требований закона. Удаление аккаунта доступно в настройках. Оно не удаляет данные у LiveLib и не отзывает отдельную подписку на письма сайта автоматически."
+        "body": "Данные аккаунта и чтения хранятся для работы вашей библиотеки. Голосовой импорт в текущей версии недоступен. Ранее загруженные записи и результаты импорта могут сохраняться; запрос на их удаление можно направить в поддержку. Обращения и технические записи хранятся, пока нужны для решения проблем, защиты сервиса и выполнения требований закона. Удаление аккаунта доступно в настройках. Оно не удаляет данные у LiveLib и не отзывает отдельную подписку на письма сайта автоматически."
       },
       {
         "title": "Ваши настройки и запросы",
@@ -66,7 +66,7 @@ const copy = {
   "en": {
     "title": "Privacy Policy",
     "back": "Back to home",
-    "updated": "Last updated: September 30, 2026",
+    "updated": "Last updated: October 14, 2026",
     "intro": "This policy explains the data kailauz processes when you use the app and website, why they are needed and how you can manage them.",
     "sections": [
       {
@@ -82,8 +82,8 @@ const copy = {
         "body": "We store books and shelves you add, reading statuses, ratings, notes, dates, progress, pages and reading sessions. These records support library synchronisation, the calendar, statistics, rereads and achievements. Personal records and reader profiles are not published in a social feed or public library."
       },
       {
-        "title": "Text, voice and barcode imports",
-        "body": "Text import processes the text you submit and the extracted book details. Voice import processes your microphone recording, its transcript and the extracted information. Camera access is requested for barcode scanning; the recognised code is sent for book lookup. You can revoke camera or microphone permission in device settings and use other ways to add books."
+        "title": "Text and barcode imports",
+        "body": "Text import processes the text you submit and the extracted book details. Camera access is requested for barcode scanning; the recognised code is sent for book lookup. You can revoke camera permission in device settings and use other ways to add books."
       },
       {
         "title": "LiveLib import",
@@ -91,7 +91,7 @@ const copy = {
       },
       {
         "title": "Automated processing and recommendations",
-        "body": "OpenAI is used to transcribe voice recordings and parse import text. It receives the relevant recording or text, including notes if you include them in your input. Do not include information you do not want processed this way. Books, ratings, preferences and reactions inform recommendations and your reader portrait. Automated results can be inaccurate; you can review import details before saving them."
+        "body": "OpenAI is used to parse import text. It receives the submitted text, including notes if you include them in your input. Do not include information you do not want processed this way. Books, ratings, preferences and reactions inform recommendations and your reader portrait. When you request an AI selection, OpenAI receives your chosen intent parameters, language, candidate book details and fit signals. This request does not include your email, account identifier or private notes. Automated results can be inaccurate; you can review import details before saving them."
       },
       {
         "title": "Support and diagnostics",
@@ -107,11 +107,11 @@ const copy = {
       },
       {
         "title": "Service providers and data sharing",
-        "body": "We use Supabase for authentication and storage, Vercel for website hosting, and OpenAI for voice and text imports. Book lookup may use Google Books and Open Library; LiveLib imports contact LiveLib. These requests contain information needed for the relevant feature. Covers and other materials may load from external servers. Providers may process data outside your country. We do not sell users’ personal reading records."
+        "body": "We use Supabase for authentication and storage, Vercel for website hosting, and OpenAI for text imports and requested AI selections. Book lookup may use Google Books and Open Library; LiveLib imports contact LiveLib. These requests contain information needed for the relevant feature. Covers and other materials may load from external servers. Providers may process data outside your country. We do not sell users’ personal reading records."
       },
       {
         "title": "Retention and deletion",
-        "body": "Account and reading data are retained to operate your library. Original voice recordings are used for import processing: after successful transcription and parsing, the system requests their deletion; processing or deletion failures may retain a recording longer. Transcripts and import results are stored separately. Support and technical records are retained as needed to resolve issues, protect the service and meet legal obligations. Account deletion is available in settings. It does not delete data held by LiveLib or automatically withdraw a separate website email subscription."
+        "body": "Account and reading data are retained to operate your library. Voice import is unavailable in the current version. Previously uploaded recordings and import results may remain stored; you can request their deletion through support. Support and technical records are retained as needed to resolve issues, protect the service and meet legal obligations. Account deletion is available in settings. It does not delete data held by LiveLib or automatically withdraw a separate website email subscription."
       },
       {
         "title": "Your controls and requests",

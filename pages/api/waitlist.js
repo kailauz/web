@@ -1,3 +1,5 @@
+import { createHmac } from 'crypto';
+import { isIP } from 'net';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -8,6 +10,7 @@ const supabaseKey =
   process.env.SUPABASE_ANON_KEY;
 
 let supabase;
+let writer;
 
 function getSupabase() {
   if (!supabaseUrl || !supabaseKey) return null;
@@ -20,6 +23,52 @@ function getSupabase() {
     });
   }
   return supabase;
+}
+
+// Writes use the existing private server-side Supabase credential. Never expose it
+// through NEXT_PUBLIC variables; missing deployment configuration fails closed.
+function getWaitlistWriter() {
+  const privateKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !privateKey) return null;
+  if (!writer) writer = createClient(supabaseUrl, privateKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  return writer;
+}
+
+async function checkWaitlistLimit(client, req, email) {
+  // Vercel supplies this header. On other hosts trust only the socket peer, never
+  // caller-controlled forwarded headers. Other reverse proxies need a separate setup.
+  const forwarded = req.headers['x-vercel-forwarded-for'];
+  const ip = process.env.VERCEL === '1'
+    ? (typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : '')
+    : String(req.socket?.remoteAddress || '');
+  if (!isIP(ip)) return { unavailable: true };
+  const principalLimit = Math.max(Number(process.env.AUTH_RATE_LIMIT_SIGN_UP || 5), 1);
+  const multiplier = Math.max(Number(process.env.AUTH_RATE_LIMIT_IP_MULTIPLIER || 6), 1);
+  const windowSeconds = Math.max(Number(process.env.AUTH_RATE_LIMIT_WINDOW_SECONDS || 900), 60);
+  if (![principalLimit, multiplier, windowSeconds, principalLimit * multiplier].every(Number.isSafeInteger)) {
+    return { unavailable: true };
+  }
+  const pepper = process.env.AUTH_RATE_LIMIT_PEPPER || createHmac('sha256', process.env.SUPABASE_SERVICE_ROLE_KEY)
+    .update('kailauz:auth-rate-limit:v1').digest('hex');
+  for (const bucket of [
+    { value: `waitlist:sign_up:ip:${ip}`, limit: principalLimit * multiplier },
+    { value: `waitlist:sign_up:principal:${email}`, limit: principalLimit },
+  ]) {
+    const key = createHmac('sha256', pepper).update(bucket.value).digest('hex');
+    const { data, error } = await client.rpc('consume_auth_rate_limit', {
+      p_action: 'waitlist_sign_up', p_bucket_key: key,
+      p_limit: bucket.limit, p_window_seconds: windowSeconds,
+    });
+    const result = Array.isArray(data) ? data[0] : null;
+    if (error || !result || typeof result.allowed !== 'boolean') return { unavailable: true };
+    if (!result.allowed) return {
+      retryAfter: Number.isSafeInteger(result.retry_after_seconds) && result.retry_after_seconds > 0
+        ? result.retry_after_seconds : windowSeconds,
+    };
+  }
+  return { allowed: true };
 }
 
 async function readWaitlistCount(client) {
@@ -60,7 +109,7 @@ export default async function handler(req, res) {
   const source = String(req.body?.source || 'landing').trim().slice(0, 100);
   const consent = req.body?.consent === true;
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     res.status(400).json({ error: 'Invalid email' });
     return;
   }
@@ -70,23 +119,40 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { error } = await client.from('landing_waitlist').insert({
+  const writeClient = getWaitlistWriter();
+  if (!writeClient) {
+    res.status(503).json({ error: 'Signup is temporarily unavailable' });
+    return;
+  }
+
+  const limit = await checkWaitlistLimit(writeClient, req, email).catch(() => ({ unavailable: true }));
+  if (limit.unavailable) {
+    res.status(503).json({ error: 'Signup is temporarily unavailable' });
+    return;
+  }
+  if (!limit.allowed) {
+    res.setHeader('Retry-After', String(limit.retryAfter));
+    res.status(429).json({ error: 'Too many signup attempts', retry_after_seconds: limit.retryAfter });
+    return;
+  }
+
+  const { error } = await writeClient.from('landing_waitlist').insert({
     email,
     locale,
     source,
     consent_email_marketing: true,
     consent_at: new Date().toISOString(),
-    user_agent: req.headers['user-agent'] || null,
+    user_agent: String(req.headers['user-agent'] || '').slice(0, 1000) || null,
   });
 
   if (error) {
     if (error.code === '23505') {
       const count = await readWaitlistCount(client);
-      res.status(200).json({ ok: true, duplicate: true, ...(count === null ? {} : { count }) });
+      res.status(200).json({ ok: true, ...(count === null ? {} : { count }) });
       return;
     }
 
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Signup is temporarily unavailable' });
     return;
   }
 
