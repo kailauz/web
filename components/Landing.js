@@ -30,7 +30,7 @@ const copy = {
     waitlistError: 'Please enter a valid email.',
     waitlistServerError: 'Something went wrong. Please try again in a moment.',
     perkCount: (count) => <><b>{count.toLocaleString('en-US')}</b> on the waitlist · the first get <b>Plus free for a month</b></>,
-    platform: 'Coming to the App Store.',
+    platform: 'Coming to iOS and Android.',
     heroAlt: 'A woman in a hat reading a book on a leather sofa by the bookshelves',
     shareAlt: 'kailauz — a reading journal app: a woman reading a book and a phone with the app',
     privacy: 'Privacy Policy',
@@ -53,7 +53,7 @@ const copy = {
     waitlistError: 'Введите корректный email.',
     waitlistServerError: 'Что-то пошло не так. Попробуйте ещё раз чуть позже.',
     perkCount: (count) => <><b>{count.toLocaleString('ru-RU')}</b> в списке ожидания · первые получат <b>Plus на месяц</b> бесплатно</>,
-    platform: 'Скоро в App Store.',
+    platform: 'Скоро на iOS и Android.',
     heroAlt: 'Девушка в шляпе читает книгу на кожаном диване у книжных полок',
     shareAlt: 'kailauz — приложение-дневник чтения: девушка с книгой и телефон с приложением',
     privacy: 'Политика конфиденциальности',
@@ -61,7 +61,7 @@ const copy = {
   }
 };
 
-/** Organization, WebSite and the iOS app in schema.org terms, so search engines know what kailauz is. */
+/** Organization, WebSite and the iOS and Android app in schema.org terms, so search engines know what kailauz is. */
 function structuredData(lang, description) {
   return {
     '@context': 'https://schema.org',
@@ -70,7 +70,7 @@ function structuredData(lang, description) {
         logo: `${SITE}/logo.png`, sameAs: ['https://t.me/kailauz'] },
       { '@type': 'WebSite', '@id': `${SITE}/#website`, name: 'kailauz', url: `${SITE}/`, inLanguage: ['ru', 'en'],
         publisher: { '@id': `${SITE}/#organization` } },
-      { '@type': 'MobileApplication', '@id': `${SITE}/#app`, name: 'kailauz', operatingSystem: 'iOS',
+      { '@type': 'MobileApplication', '@id': `${SITE}/#app`, name: 'kailauz', operatingSystem: 'iOS, Android',
         applicationCategory: 'LifestyleApplication', inLanguage: lang, description, url: PAGE_URL[lang],
         image: `${SITE}/landing/share-${lang}.jpg`, publisher: { '@id': `${SITE}/#organization` } },
     ],
@@ -126,8 +126,8 @@ export default function Landing({ lang }) {
       : 'kailauz — reading app with AI recommendations';
   const description =
     lang === 'ru'
-      ? 'kailauz — приложение для чтения на iOS. Помогает вести книги, понимать свой вкус и получать более точные рекомендации.'
-      : 'kailauz is a reading app for iOS. Track books, understand your reading taste, and get better recommendations. Join the waiting list.';
+      ? 'kailauz — приложение для чтения на iOS и Android. Помогает вести книги, понимать свой вкус и получать более точные рекомендации.'
+      : 'kailauz is a reading app for iOS and Android. Track books, understand your reading taste, and get better recommendations. Join the waiting list.';
 
   async function handleSubmit(event) {
     event.preventDefault();
