@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://kailauz.com/sitemap.xml
+Sitemap: https://www.kailauz.com/sitemap.xml

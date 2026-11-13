@@ -11,6 +11,10 @@ if (existsSync(rootEnvLoaderPath)) {
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  // The English landing used to be /?lang=en; it is a real page now.
+  async redirects() {
+    return [{ source: '/', has: [{ type: 'query', key: 'lang', value: 'en' }], destination: '/en', permanent: true }];
+  },
 };
 
 module.exports = nextConfig;

@@ -50,8 +50,8 @@
 .brand { gap: 10px; margin-right: auto; font: 600 19px/24px var(--font-onest), sans-serif; letter-spacing: -.02em; }
 .brand img { width: 24px; height: 30px; display: block; object-fit: contain; }
 .lang { display: flex; align-items: center; gap: 16px; height: 20px; padding-left: 24px; border-left: 1px solid rgba(255, 255, 255, .25); }
-.lang button { min-height: 44px; padding: 0; border: 0; background: none; color: rgba(255, 255, 255, .6); font: 500 15px/20px var(--font-onest), sans-serif; cursor: pointer; }
-.lang button[aria-pressed='true'] { color: #fff; }
+.header .lang a { min-height: 44px; display: inline-flex; align-items: center; color: rgba(255, 255, 255, .6); font: 500 15px/20px var(--font-onest), sans-serif; }
+.header .lang a[aria-current='page'] { color: #fff; }
 
 /* Full-bleed banner */
 .hero { position: relative; width: 100%; height: max(720px, calc(100svh - 80px)); }
