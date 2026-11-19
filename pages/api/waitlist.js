@@ -79,6 +79,31 @@ async function readWaitlistCount(client) {
   return Number.isSafeInteger(count) && count >= 0 ? count : null;
 }
 
+function sameHost(value, host) {
+  try {
+    const url = new URL(value);
+    return (url.protocol === 'https:' || url.protocol === 'http:') && url.host === host ? url : null;
+  } catch {
+    return null;
+  }
+}
+
+function readCampaignSource(req) {
+  const referrer = sameHost(req.headers.referer, req.headers.host);
+  if (referrer?.pathname !== '/' && referrer?.pathname !== '/en') return null;
+
+  const part = (key, max) => {
+    const value = referrer.searchParams.get(`utm_${key}`)?.trim().toLowerCase();
+    return value && /^[a-z0-9][a-z0-9_-]*$/.test(value) ? value.slice(0, max) : '';
+  };
+  const source = part('source', 16);
+  if (!source) return null;
+  const medium = part('medium', 16);
+  const campaign = part('campaign', 34);
+  const content = part('content', 24);
+  return `utm:${source}/${medium || '-'}/${campaign || '-'}/${content || '-'}`;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'GET' && req.method !== 'POST') {
     res.setHeader('Allow', 'GET, POST');
@@ -86,13 +111,10 @@ export default async function handler(req, res) {
     return;
   }
 
-  const client = getSupabase();
-  if (!client) {
-    res.status(500).json({ error: 'Supabase env is missing' });
-    return;
-  }
-
   if (req.method === 'GET') {
+    const client = getSupabase();
+    if (!client) return res.status(500).json({ error: 'Supabase env is missing' });
+
     const count = await readWaitlistCount(client);
     if (count === null) {
       res.status(503).json({ error: 'Waitlist count is unavailable' });
@@ -104,58 +126,60 @@ export default async function handler(req, res) {
     return;
   }
 
-  const email = String(req.body?.email || '').trim().toLowerCase();
+  const nativeForm = req.headers['content-type']?.split(';')[0] === 'application/x-www-form-urlencoded';
   const locale = req.body?.lang === 'ru' ? 'ru' : 'en';
-  const source = String(req.body?.source || 'landing').trim().slice(0, 100);
-  const consent = req.body?.consent === true;
+  res.setHeader('Cache-Control', 'no-store');
+  if (nativeForm && (
+    ['cross-site', 'same-site'].includes(req.headers['sec-fetch-site']) ||
+    (req.headers.origin && !sameHost(req.headers.origin, req.headers.host))
+  )) {
+    return res.status(403).json({ error: 'Invalid form origin' });
+  }
+  const respond = (status, result, body) => (
+    nativeForm ? res.redirect(303, `/waitlist/${locale}/${result}`) : res.status(status).json(body)
+  );
 
+  const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    res.status(400).json({ error: 'Invalid email' });
-    return;
+    return respond(400, 'email', { error: 'Invalid email' });
   }
 
+  const consent = nativeForm ? req.body.consent === 'true' : req.body.consent === true;
   if (!consent) {
-    res.status(400).json({ error: 'Consent is required' });
-    return;
+    return respond(400, 'consent', { error: 'Consent is required' });
   }
 
+  const client = getSupabase();
+  if (!client) return respond(500, 'unavailable', { error: 'Supabase env is missing' });
   const writeClient = getWaitlistWriter();
   if (!writeClient) {
-    res.status(503).json({ error: 'Signup is temporarily unavailable' });
-    return;
+    return respond(503, 'unavailable', { error: 'Signup is temporarily unavailable' });
   }
 
   const limit = await checkWaitlistLimit(writeClient, req, email).catch(() => ({ unavailable: true }));
   if (limit.unavailable) {
-    res.status(503).json({ error: 'Signup is temporarily unavailable' });
-    return;
+    return respond(503, 'unavailable', { error: 'Signup is temporarily unavailable' });
   }
   if (!limit.allowed) {
     res.setHeader('Retry-After', String(limit.retryAfter));
-    res.status(429).json({ error: 'Too many signup attempts', retry_after_seconds: limit.retryAfter });
-    return;
+    return respond(429, 'unavailable', { error: 'Too many signup attempts', retry_after_seconds: limit.retryAfter });
   }
 
+  const campaign = readCampaignSource(req);
   const { error } = await writeClient.from('landing_waitlist').insert({
     email,
     locale,
-    source,
+    source: campaign || String(req.body.source || 'landing').trim().slice(0, 100) || 'landing',
     consent_email_marketing: true,
     consent_at: new Date().toISOString(),
     user_agent: String(req.headers['user-agent'] || '').slice(0, 1000) || null,
   });
 
-  if (error) {
-    if (error.code === '23505') {
-      const count = await readWaitlistCount(client);
-      res.status(200).json({ ok: true, ...(count === null ? {} : { count }) });
-      return;
-    }
-
-    res.status(500).json({ error: 'Signup is temporarily unavailable' });
-    return;
+  if (error && error.code !== '23505') {
+    return respond(500, 'unavailable', { error: 'Signup is temporarily unavailable' });
   }
 
-  const count = await readWaitlistCount(client);
-  res.status(200).json({ ok: true, ...(count === null ? {} : { count }) });
+  if (!error) console.info(JSON.stringify({ event: 'waitlist.signup', source: campaign || 'landing', locale }));
+  const count = nativeForm ? null : await readWaitlistCount(client);
+  return respond(200, 'success', { ok: true, ...(count === null ? {} : { count }) });
 }

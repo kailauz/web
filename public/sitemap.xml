@@ -2,22 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.kailauz.com/</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <xhtml:link rel="alternate" hreflang="ru" href="https://www.kailauz.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.kailauz.com/en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kailauz.com/"/>
   </url>
   <url>
     <loc>https://www.kailauz.com/en</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <xhtml:link rel="alternate" hreflang="ru" href="https://www.kailauz.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.kailauz.com/en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kailauz.com/"/>
   </url>
   <url>
     <loc>https://www.kailauz.com/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.kailauz.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.kailauz.com/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kailauz.com/privacy"/>
+  </url>
+  <url>
+    <loc>https://www.kailauz.com/en/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.kailauz.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.kailauz.com/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kailauz.com/privacy"/>
   </url>
   <url>
     <loc>https://www.kailauz.com/terms</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.kailauz.com/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.kailauz.com/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kailauz.com/terms"/>
+  </url>
+  <url>
+    <loc>https://www.kailauz.com/en/terms</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.kailauz.com/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.kailauz.com/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.kailauz.com/terms"/>
   </url>
 </urlset>

@@ -1,10 +1,12 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
-import site from '../styles/Landing.module.css';
 import styles from '../styles/LegalDocument.module.css';
 
 export default function LegalDocument({ copy, lang, slug }) {
+  const ru = `https://www.kailauz.com/${slug}`;
+  const en = `https://www.kailauz.com/en/${slug}`;
+  const home = lang === 'en' ? '/en' : '/';
   return (
     <>
       <Head>
@@ -12,15 +14,18 @@ export default function LegalDocument({ copy, lang, slug }) {
         <meta name="robots" content="index, follow" />
         <meta name="description" content={copy.intro} />
         <meta name="theme-color" content="#FAF8F4" />
-        <link rel="canonical" href={`https://www.kailauz.com/${slug}${lang === 'en' ? '?lang=en' : ''}`} />
+        <link rel="canonical" href={lang === 'en' ? en : ru} />
+        <link rel="alternate" hrefLang="ru" href={ru} />
+        <link rel="alternate" hrefLang="en" href={en} />
+        <link rel="alternate" hrefLang="x-default" href={ru} />
       </Head>
-      <main className={`${site.landing} ${styles.page}`} lang={lang}>
+      <main className={styles.page}>
         <div className={styles.wrap}>
           <header className={styles.header}>
-            <Link href={lang === 'en' ? '/?lang=en' : '/'} aria-label="kailauz">
-              <img src="/logo.png" alt="kailauz" className={site.brandLogo} />
+            <Link href={home} aria-label="kailauz">
+              <img src="/logo.png" alt="kailauz" className={styles.brandLogo} width="44" height="44" />
             </Link>
-            <Link href={lang === 'en' ? '/?lang=en' : '/'} className={styles.backLink}>← {copy.back}</Link>
+            <Link href={home} className={styles.backLink}>← {copy.back}</Link>
           </header>
           <article className={styles.document}>
             <h1>{copy.title}</h1>

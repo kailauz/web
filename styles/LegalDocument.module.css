@@ -1,6 +1,14 @@
-.page { padding: 28px 0 64px; }
+.page {
+  --plum: #654B77;
+  --quiet-border: #E5DDD4;
+  --muted-ink: #71675F;
+  --secondary: #514A44;
+  --editorial-font: Georgia, serif;
+  padding: 28px 0 64px;
+}
 .wrap { width: min(calc(100% - 48px), 840px); margin-inline: auto; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.brandLogo { display: block; object-fit: contain; }
 .backLink { display: inline-flex; align-items: center; min-height: 44px; color: var(--plum); font-size: 14px; }
 .backLink:hover, .contact:hover { text-decoration: underline; text-underline-offset: 4px; }
 .document { padding: clamp(24px, 5vw, 56px); border: 1px solid var(--quiet-border); border-radius: 11px; background: rgba(255, 255, 255, .92); }

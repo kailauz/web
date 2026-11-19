@@ -11,9 +11,13 @@ if (existsSync(rootEnvLoaderPath)) {
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
-  // The English landing used to be /?lang=en; it is a real page now.
   async redirects() {
-    return [{ source: '/', has: [{ type: 'query', key: 'lang', value: 'en' }], destination: '/en', permanent: true }];
+    return ['/', '/privacy', '/terms'].map((source) => ({
+      source,
+      has: [{ type: 'query', key: 'lang', value: 'en' }],
+      destination: source === '/' ? '/en' : `/en${source}`,
+      permanent: true,
+    }));
   },
 };
 

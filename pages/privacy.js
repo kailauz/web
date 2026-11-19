@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 import LegalDocument from '../components/LegalDocument';
 
 const copy = {
@@ -125,8 +123,6 @@ const copy = {
   }
 };
 
-export default function PrivacyPage() {
-  const { query } = useRouter();
-  const lang = query.lang === 'en' ? 'en' : 'ru';
+export default function PrivacyPage({ lang = 'ru' }) {
   return <LegalDocument copy={copy[lang]} lang={lang} slug="privacy" />;
 }

@@ -1,9 +1,10 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 
-/** The page language for search engines and screen readers: /en is English, every other page Russian. */
 export default function Document({ __NEXT_DATA__: data }) {
+  const page = data?.page;
+  const locale = page === '/en' || page?.startsWith('/en/') || data?.props?.pageProps?.lang === 'en' ? 'en' : 'ru';
   return (
-    <Html lang={data?.page === '/en' ? 'en' : 'ru'}>
+    <Html lang={locale}>
       <Head />
       <body>
         <Main />
