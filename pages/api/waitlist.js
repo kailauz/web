@@ -43,12 +43,12 @@ async function checkWaitlistLimit(client, req, email) {
   const ip = process.env.VERCEL === '1'
     ? (typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : '')
     : String(req.socket?.remoteAddress || '');
-  if (!isIP(ip)) return { unavailable: true };
+  if (!isIP(ip)) return { unavailable: 'ip' };
   const principalLimit = Math.max(Number(process.env.AUTH_RATE_LIMIT_SIGN_UP || 5), 1);
   const multiplier = Math.max(Number(process.env.AUTH_RATE_LIMIT_IP_MULTIPLIER || 6), 1);
   const windowSeconds = Math.max(Number(process.env.AUTH_RATE_LIMIT_WINDOW_SECONDS || 900), 60);
   if (![principalLimit, multiplier, windowSeconds, principalLimit * multiplier].every(Number.isSafeInteger)) {
-    return { unavailable: true };
+    return { unavailable: 'config' };
   }
   const pepper = process.env.AUTH_RATE_LIMIT_PEPPER || createHmac('sha256', process.env.SUPABASE_SERVICE_ROLE_KEY)
     .update('kailauz:auth-rate-limit:v1').digest('hex');
@@ -62,7 +62,7 @@ async function checkWaitlistLimit(client, req, email) {
       p_limit: bucket.limit, p_window_seconds: windowSeconds,
     });
     const result = Array.isArray(data) ? data[0] : null;
-    if (error || !result || typeof result.allowed !== 'boolean') return { unavailable: true };
+    if (error || !result || typeof result.allowed !== 'boolean') return { unavailable: `rpc:${error?.code || error?.message || 'empty'}` };
     if (!result.allowed) return {
       retryAfter: Number.isSafeInteger(result.retry_after_seconds) && result.retry_after_seconds > 0
         ? result.retry_after_seconds : windowSeconds,
@@ -153,14 +153,15 @@ export default async function handler(req, res) {
   if (!client) return respond(500, 'unavailable', { error: 'Supabase env is missing' });
   const writeClient = getWaitlistWriter();
   if (!writeClient) {
+    console.error(JSON.stringify({ event: 'waitlist.unavailable', reason: 'service_role_key_missing' }));
     return respond(503, 'unavailable', { error: 'Signup is temporarily unavailable' });
   }
 
-  const limit = await checkWaitlistLimit(writeClient, req, email).catch(() => ({ unavailable: true }));
+  // A broken rate limiter must not stop signups: it is logged and the signup goes through.
+  const limit = await checkWaitlistLimit(writeClient, req, email).catch(error => ({ unavailable: `throw:${error?.message || 'unknown'}` }));
   if (limit.unavailable) {
-    return respond(503, 'unavailable', { error: 'Signup is temporarily unavailable' });
-  }
-  if (!limit.allowed) {
+    console.error(JSON.stringify({ event: 'waitlist.limit_unavailable', reason: String(limit.unavailable).slice(0, 200) }));
+  } else if (!limit.allowed) {
     res.setHeader('Retry-After', String(limit.retryAfter));
     return respond(429, 'unavailable', { error: 'Too many signup attempts', retry_after_seconds: limit.retryAfter });
   }
@@ -176,6 +177,7 @@ export default async function handler(req, res) {
   });
 
   if (error && error.code !== '23505') {
+    console.error(JSON.stringify({ event: 'waitlist.insert_failed', code: error.code || null, message: String(error.message || '').slice(0, 200) }));
     return respond(500, 'unavailable', { error: 'Signup is temporarily unavailable' });
   }
 
