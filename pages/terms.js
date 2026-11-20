@@ -37,7 +37,7 @@ const copy = {
       },
       {
         "title": "Поддержка",
-        "body": "Обращения и переписка с командой доступны через ваш аккаунт. Описывайте проблему достоверно и не отправляйте пароли, токены и чужие персональные данные без необходимости. Статус обращения показывает ход его обработки, но не гарантирует конкретный срок исправления или реализации предложения."
+        "body": "Связаться с командой поддержки можно по электронной почте. Описывайте проблему достоверно и не отправляйте пароли, токены и чужие персональные данные без необходимости."
       },
       {
         "title": "Допустимое использование",
@@ -53,7 +53,7 @@ const copy = {
       },
       {
         "title": "Изменения условий и контакты",
-        "body": "Актуальная редакция условий опубликована на этой странице с датой обновления. Изменения применяются с учётом требований закона и не отменяют обязательные права пользователей. По вопросам работы сервиса и этих условий обращайтесь в поддержку приложения или официальный Telegram по ссылке ниже."
+        "body": "Актуальная редакция условий опубликована на этой странице с датой обновления. Изменения применяются с учётом требований закона и не отменяют обязательные права пользователей. По вопросам работы сервиса и этих условий обращайтесь в поддержку по электронной почте."
       }
     ]
   },
@@ -93,7 +93,7 @@ const copy = {
       },
       {
         "title": "Support",
-        "body": "Support requests and conversations with the team are available through your account. Describe issues accurately and do not send passwords, tokens or unnecessary personal information about others. A request status indicates its progress but does not guarantee a specific date for a fix or feature."
+        "body": "You can contact support by email. Describe issues accurately and do not send passwords, tokens or unnecessary personal information about others."
       },
       {
         "title": "Acceptable use",
@@ -109,7 +109,7 @@ const copy = {
       },
       {
         "title": "Changes and contact",
-        "body": "The current terms are published on this page with their revision date. Changes apply subject to legal requirements and do not override mandatory user rights. For questions about the service or these terms, use in-app support or the official Telegram link below."
+        "body": "The current terms are published on this page with their revision date. Changes apply subject to legal requirements and do not override mandatory user rights. For questions about the service or these terms, contact support by email."
       }
     ]
   }

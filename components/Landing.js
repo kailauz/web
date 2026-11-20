@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { Literata, Onest } from 'next/font/google';
 import LandingSections from './LandingSections';
 import WaitlistForm, { useWaitlist } from './WaitlistForm';
 
@@ -8,10 +7,6 @@ import styles from '../styles/Landing.module.css';
 
 const SITE = 'https://www.kailauz.com';
 const PAGE_URL = { ru: `${SITE}/`, en: `${SITE}/en` };
-
-const onest = Onest({ subsets: ['latin', 'cyrillic'], weight: ['400', '500', '600', '700'], variable: '--font-onest', display: 'swap' });
-
-const literata = Literata({ subsets: ['latin', 'cyrillic'], weight: '400', variable: '--font-literata', display: 'swap' });
 
 const copy = {
   en: {
@@ -54,7 +49,7 @@ function structuredData(lang, description, shareImage) {
   };
 }
 
-export default function Landing({ lang }) {
+export default function Landing({ lang, fonts }) {
   const t = { ...copy[lang], ...waitlistCopy[lang] };
   const waitlist = useWaitlist(lang);
 
@@ -109,7 +104,7 @@ export default function Landing({ lang }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang, description, shareImage)) }} />
       </Head>
 
-      <div className={`${styles.page} ${onest.variable} ${literata.variable}`}>
+      <div className={`${styles.page} ${fonts}`}>
         <div className={styles.botanical} aria-hidden="true" />
 
         <header className={styles.header}>

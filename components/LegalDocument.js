@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import styles from '../styles/LegalDocument.module.css';
 
 export default function LegalDocument({ copy, lang, slug }) {
+  const supportEmail = process.env.KAILAUZ_SUPPORT_EMAIL;
   const ru = `https://www.kailauz.com/${slug}`;
   const en = `https://www.kailauz.com/en/${slug}`;
   const home = lang === 'en' ? '/en' : '/';
@@ -23,7 +25,7 @@ export default function LegalDocument({ copy, lang, slug }) {
         <div className={styles.wrap}>
           <header className={styles.header}>
             <Link href={home} aria-label="kailauz">
-              <img src="/logo.png" alt="kailauz" className={styles.brandLogo} width="44" height="44" />
+              <Image src="/logo.png" alt="kailauz" className={styles.brandLogo} width="44" height="44" />
             </Link>
             <Link href={home} className={styles.backLink}>← {copy.back}</Link>
           </header>
@@ -37,7 +39,7 @@ export default function LegalDocument({ copy, lang, slug }) {
                 <p>{section.body}</p>
               </section>
             ))}
-            <a className={styles.contact} href="https://t.me/kailauz" target="_blank" rel="noreferrer">Telegram — @kailauz ↗</a>
+            {supportEmail && <a className={styles.contact} href={`mailto:${encodeURIComponent(supportEmail).replace('%40', '@')}`}>{supportEmail}</a>}
           </article>
         </div>
       </main>

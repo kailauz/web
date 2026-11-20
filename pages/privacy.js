@@ -57,7 +57,7 @@ const copy = {
       },
       {
         "title": "Контакты и изменения",
-        "body": "По вопросам данных обращайтесь через раздел поддержки приложения или официальный Telegram по ссылке ниже. При изменении обработки данных мы обновляем эту страницу и дату редакции."
+        "body": "По вопросам данных обращайтесь в поддержку по электронной почте. При изменении обработки данных мы обновляем эту страницу и дату редакции."
       }
     ]
   },
@@ -117,7 +117,7 @@ const copy = {
       },
       {
         "title": "Contact and changes",
-        "body": "For data questions, use in-app support or the official Telegram link below. When data processing changes, we update this page and its revision date."
+        "body": "For data questions, contact support by email. When data processing changes, we update this page and its revision date."
       }
     ]
   }

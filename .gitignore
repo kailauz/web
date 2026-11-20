@@ -23,3 +23,5 @@ coverage/
 *service_account*.json
 credentials*.json
 secrets*.json
+.vercel
+.env*

@@ -10,6 +10,7 @@ if (existsSync(rootEnvLoaderPath)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  env: { KAILAUZ_SUPPORT_EMAIL: process.env.KAILAUZ_SUPPORT_EMAIL?.trim() || '' },
   reactStrictMode: true,
   async redirects() {
     return ['/', '/privacy', '/terms'].map((source) => ({
