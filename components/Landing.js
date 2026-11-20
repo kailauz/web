@@ -22,7 +22,6 @@ const copy = {
     perkCount: (count) => <><b>{count.toLocaleString('en-US')}</b> on the waitlist</>,
     platform: 'Coming to iOS and Android.',
     heroAlt: 'A woman in a hat reading a book on a leather sofa by the bookshelves',
-    shareAlt: 'Kailauz — Find your next favorite book. A sample recommendation for Piranesi.',
     privacy: 'Privacy Policy',
     terms: 'Terms of Use'
   },
@@ -34,14 +33,13 @@ const copy = {
     perkCount: (count) => <><b>{count.toLocaleString('ru-RU')}</b> в списке ожидания</>,
     platform: 'Скоро на iOS и Android.',
     heroAlt: 'Девушка в шляпе читает книгу на кожаном диване у книжных полок',
-    shareAlt: 'Kailauz — Найди следующую любимую книгу. Пример рекомендации «Глаза Моны».',
     privacy: 'Политика конфиденциальности',
     terms: 'Условия использования'
   }
 };
 
 /** Organization, WebSite and the iOS and Android app in schema.org terms, so search engines know what kailauz is. */
-function structuredData(lang, description) {
+function structuredData(lang, description, shareImage) {
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -51,7 +49,7 @@ function structuredData(lang, description) {
         publisher: { '@id': `${SITE}/#organization` } },
       { '@type': 'MobileApplication', '@id': `${SITE}/#app`, name: 'kailauz', operatingSystem: 'iOS, Android',
         applicationCategory: 'LifestyleApplication', inLanguage: lang, description, url: PAGE_URL[lang],
-        image: `${SITE}/landing/share-${lang}.jpg`, publisher: { '@id': `${SITE}/#organization` } },
+        image: shareImage, publisher: { '@id': `${SITE}/#organization` } },
     ],
   };
 }
@@ -69,6 +67,8 @@ export default function Landing({ lang }) {
       ? 'Дневник чтения для iOS и Android. Веди библиотеку, отмечай прогресс и получай подборку книг по своему вкусу каждую неделю. Запишись на ранний доступ.'
       : 'A reading tracker for iOS and Android. Keep your library, track progress, and get weekly book recommendations to match your taste. Join the waitlist.';
   const shareTitle = `${t.titleStart} ${t.titleAccent}`;
+  const shareImage = `${SITE}/landing/share-${lang}-v2.jpg`;
+  const shareAlt = `Kailauz — ${shareTitle}`;
 
   const privacyHref = lang === 'en' ? '/en/privacy' : '/privacy';
   const termsHref = lang === 'en' ? '/en/terms' : '/terms';
@@ -87,11 +87,11 @@ export default function Landing({ lang }) {
         <meta property="og:type" content="website" />
         <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'ru_RU'} />
         <meta property="og:locale:alternate" content={lang === 'en' ? 'ru_RU' : 'en_US'} />
-        <meta property="og:image" content={`${SITE}/landing/share-${lang}.jpg`} />
+        <meta property="og:image" content={shareImage} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content={t.shareAlt} />
-        <meta name="twitter:image" content={`${SITE}/landing/share-${lang}.jpg`} />
+        <meta property="og:image:alt" content={shareAlt} />
+        <meta name="twitter:image" content={shareImage} />
         <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.png" />
@@ -102,11 +102,11 @@ export default function Landing({ lang }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={shareTitle} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image:alt" content={t.shareAlt} />
+        <meta name="twitter:image:alt" content={shareAlt} />
         <link rel="preload" href="/landing/hero-mobile.webp" as="image" type="image/webp" media="(max-width: 600px)" />
         <link rel="preload" href="/landing/hero.webp" as="image" type="image/webp" media="(min-width: 601px)" />
         <link rel="manifest" href="/site.webmanifest" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang, description)) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang, description, shareImage)) }} />
       </Head>
 
       <div className={`${styles.page} ${onest.variable} ${literata.variable}`}>
